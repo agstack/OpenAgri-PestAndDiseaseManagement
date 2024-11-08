@@ -68,10 +68,10 @@ def create_rule(
             )
 
     for cond in cond_times.values():
-        if len(cond) > 2:
+        if len(cond) >= 2:
             raise HTTPException(
                 status_code=400,
-                detail="Can't have more that two condition per unit."
+                detail="Can't have more that one condition per unit."
             )
 
     cr = CreateRule(name=rule.name, description=rule.description, from_time=rule.from_time, to_time=rule.to_time)
