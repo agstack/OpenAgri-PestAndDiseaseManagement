@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, UUID4
 import datetime
 
 
@@ -21,6 +21,8 @@ class CreateData(BaseModel):
     relative_humidity_canopy: Optional[float]
     temperature_canopy: Optional[float]
     solar_irradiance_copernicus: Optional[float]
+
+    dataset_id: UUID4
 
 class UpdateData(BaseModel):
     model_config = ConfigDict(from_attributes=True)

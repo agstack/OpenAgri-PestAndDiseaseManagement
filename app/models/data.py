@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, Date, Time, String, Float
+from sqlalchemy import Column, Integer, Date, Time, String, Float, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.base_class import Base
 
@@ -20,3 +21,6 @@ class Data(Base):
     relative_humidity_canopy = Column(Float, nullable=True, info={"unit_of_measure": "percentage"})
     temperature_canopy = Column(Float, nullable=True, info={"unit_of_measure": "celsius"})
     solar_irradiance_copernicus = Column(Float, nullable=True, info={"unit_of_measure": "W/m2"})
+
+    dataset_id : Mapped[int] = mapped_column(ForeignKey("dataset.id"))
+    dataset: Mapped["Dataset"] = relationship(back_populates="data")

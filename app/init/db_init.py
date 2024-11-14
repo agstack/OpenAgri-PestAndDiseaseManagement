@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import Operator
+from models import Operator, Unit
 
 from core.config import settings
 
@@ -10,23 +10,30 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 db = SessionLocal()
 
+def init_units():
+    db.add(Unit(name="temperature_air", symbol="Celsius"))
+    db.add(Unit(name="relative_humidity", symbol="%"))
+    db.add(Unit(name="precipitation", symbol="mm"))
+    db.add(Unit(name="wind_speed", symbol="km/h"))
+    db.add(Unit(name="wind_gust", symbol="km/h"))
+    db.add(Unit(name="atmospheric_pressure", symbol="mbar"))
+    db.add(Unit(name="relative_humidity_canopy", symbol="%"))
+    db.add(Unit(name="temperature_canopy", symbol="°C"))
+    db.add(Unit(name="solar_irradiance_copernicus", symbol="W/m2"))
+
 
 def init_operators():
-    a = Operator(symbol=">")
-    c = Operator(symbol="<")
-    d = Operator(symbol=">=")
-    e = Operator(symbol="<=")
-    f = Operator(symbol="==")
-    g = Operator(symbol="!=")
-
-    l = [a,c,d,e,f,g]
-    for operator in l:
-        db.add(operator)
-        db.commit()
-
+    db.add(Operator(symbol=">"))
+    db.add(Operator(symbol="<"))
+    db.add(Operator(symbol=">="))
+    db.add(Operator(symbol="<="))
+    db.add(Operator(symbol="=="))
+    db.add(Operator(symbol="!="))
 
 
 def init_db():
+    init_units()
     init_operators()
-    db.flush()
+
+    db.commit()
     db.close()
