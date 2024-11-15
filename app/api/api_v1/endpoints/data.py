@@ -21,7 +21,27 @@ async def upload(
         user: User = Depends(deps.get_current_user)
 ) -> Message:
     """
-    Upload a .csv file (Using the ploutos .csv provided as how a baseline file should be formatted)
+    Upload a .csv file that contains data about weather.
+
+    List of columns that this api will parse:
+
+    [
+        "date", "time", "parcel_location", "atmospheric_temperature", "atmospheric_temperature_daily_min",
+        "atmospheric_temperature_daily_max", "atmospheric_temperature_daily_average", "atmospheric_relative_humidity",
+        "atmospheric_pressure", "precipitation", "average_wind_speed", "wind_direction", "wind_gust",
+        "leaf_relative_humidity", "leaf_temperature", "leaf_wetness",
+        "soil_temperature_10cm", "soil_temperature_20cm", "soil_temperature_30cm", "soil_temperature_40cm",
+        "soil_temperature_50cm", "soil_temperature_60cm", "solar_irradiance_copernicus"
+    ]
+
+    date and time are mandatory fields.
+
+    date format: %Y-%m-%d
+    time format: %H:%M:%S
+
+    any decimal numbers present in the dataset should be formatted using "." (dot) and not "," (comma),
+    but nevertheless, the api will attempt to swap "," for ".".
+
     """
 
     dataset_db = crud.dataset.get_by_name(db=db, name=csv_file.filename)
@@ -29,49 +49,129 @@ async def upload(
     if dataset_db:
         raise HTTPException(
             status_code=400,
-            detail="Error, dataset with same name already uploaded, please rename your dataset"
+            detail="Error, dataset with same filename already uploaded, please rename your dataset"
         )
 
     new_dataset = crud.dataset.create(db=db, obj_in=CreateDataset(name=csv_file.filename))
 
     csv_reader = reader(iterdecode(csv_file.file, "utf-8-sig"), delimiter=";")
-    # Skips the first row (column definitions) of the file
-    next(csv_reader)
+
+    # Parse the .csv headers
+    headers = next(csv_reader)
+
+    possible_column_names = [
+        "date", "time", "parcel_location", "atmospheric_temperature", "atmospheric_temperature_daily_min",
+        "atmospheric_temperature_daily_max", "atmospheric_temperature_daily_average", "atmospheric_relative_humidity",
+        "atmospheric_pressure", "precipitation", "average_wind_speed", "wind_direction", "wind_gust",
+        "leaf_relative_humidity", "leaf_temperature", "leaf_wetness", "soil_temperature_10cm", "soil_temperature_20cm",
+        "soil_temperature_30cm", "soil_temperature_40cm", "soil_temperature_50cm", "soil_temperature_60cm",
+        "solar_irradiance_copernicus"
+    ]
+
+    # If there are more columns than what is expected, decline the dataset
+    if len(headers) > len(possible_column_names):
+        crud.dataset.remove(db=db, id=new_dataset.id)
+
+        raise HTTPException(
+            status_code=400,
+            detail="Error, dataset has more than {} columns, not supported, please conform to required dataset format".format(len(possible_column_names))
+        )
+
+    # if there is no useful information then decline the dataset (see comment #A)
+    if len(headers) < 3:
+        crud.dataset.remove(db=db, id=new_dataset.id)
+
+        raise HTTPException(
+            status_code=400,
+            detail="Error, won't accept dataset with less than 3 columns, please provide more information in the dataset"
+        )
+
+    if "date" not in headers or "time" not in headers:
+        crud.dataset.remove(db=db, id=new_dataset.id)
+
+        raise HTTPException(
+            status_code=400,
+            detail="Error, can't upload dataset with no date or time information"
+        )
+
+    # Find usable columns and their place in the file (column sequence)
+    usable_column_names = {}
+
+    col_pos = 0
+    for col in headers:
+        if col in possible_column_names:
+            usable_column_names[col] = col_pos
+        col_pos = col_pos + 1
+
+    #A
+    # Refuse to accept dataset if there is only date+time information.
+    # If but one of these is missing, then we have date+something or time+something which is again, useless.
+    if len(usable_column_names.items()) < 3:
+        crud.dataset.remove(db=db, id=new_dataset.id)
+
+        raise HTTPException(
+            status_code=400,
+            detail="Error, .csv contains two or less usable columns, please upload a file with more columns"
+        )
 
     rows = []
     for row in csv_reader:
+        try:
+            leaf_wetness = float(row[usable_column_names["leaf_wetness"]].replace(",", ".")) if "leaf_wetness" in usable_column_names else None
 
-        if len(row) < 14:
+            if leaf_wetness and (leaf_wetness < 0.0 or leaf_wetness > 1.0):
+                raise HTTPException(
+                    status_code=400,
+                    detail="leaf_wetness row value is out of bounds, bounds: [0, 1]"
+                )
+
+            obj_in = CreateData(
+                date=datetime.datetime.strptime(row[usable_column_names["date"]], "%Y-%m-%d"),
+                time=datetime.datetime.strptime(row[usable_column_names["time"]], "%H:%M:%S").time(),
+
+                parcel_location=row[usable_column_names["parcel_location"]] if "parcel_location" in usable_column_names else None,
+
+                atmospheric_temperature=float(row[usable_column_names["atmospheric_temperature"]].replace(",", ".")) if "atmospheric_temperature" in usable_column_names else None,
+                atmospheric_temperature_daily_min=float(row[usable_column_names["atmospheric_temperature_daily_min"]].replace(",", ".")) if "atmospheric_temperature_daily_min" in usable_column_names else None,
+                atmospheric_temperature_daily_max=float(row[usable_column_names["atmospheric_temperature_daily_max"]].replace(",", ".")) if "atmospheric_temperature_daily_max" in usable_column_names else None,
+                atmospheric_temperature_daily_average=float(row[usable_column_names["atmospheric_temperature_daily_average"]].replace(",", ".")) if "atmospheric_temperature_daily_average" in usable_column_names else None,
+                atmospheric_relative_humidity=float(row[usable_column_names["atmospheric_relative_humidity"]].replace(",", ".")) if "atmospheric_relative_humidity" in usable_column_names else None,
+                atmospheric_pressure=float(row[usable_column_names["atmospheric_pressure"]].replace(",", ".")) if "atmospheric_pressure" in usable_column_names else None,
+
+                precipitation=float(row[usable_column_names["precipitation"]].replace(",", ".")) if "precipitation" in usable_column_names else None,
+
+                average_wind_speed=float(row[usable_column_names["average_wind_speed"]].replace(",", ".")) if "average_wind_speed" in usable_column_names else None,
+                wind_direction=row[usable_column_names["wind_direction"]] if "wind_direction" in usable_column_names else None,
+                wind_gust=float(row[usable_column_names["wind_gust"]].replace(",", ".")) if "wind_gust" in usable_column_names else None,
+
+                leaf_relative_humidity=float(row[usable_column_names["leaf_relative_humidity"]].replace(",", ".")) if "leaf_relative_humidity" in usable_column_names else None,
+                leaf_temperature=float(row[usable_column_names["leaf_temperature"]].replace(",", ".")) if "leaf_temperature" in usable_column_names else None,
+                leaf_wetness=leaf_wetness,
+
+                soil_temperature_10cm=float(row[usable_column_names["soil_temperature_10cm"]].replace(",", ".")) if "soil_temperature_10cm" in usable_column_names else None,
+                soil_temperature_20cm=float(row[usable_column_names["soil_temperature_20cm"]].replace(",", ".")) if "soil_temperature_20cm" in usable_column_names else None,
+                soil_temperature_30cm=float(row[usable_column_names["soil_temperature_30cm"]].replace(",", ".")) if "soil_temperature_30cm" in usable_column_names else None,
+                soil_temperature_40cm=float(row[usable_column_names["soil_temperature_40cm"]].replace(",", ".")) if "soil_temperature_40cm" in usable_column_names else None,
+                soil_temperature_50cm=float(row[usable_column_names["soil_temperature_50cm"]].replace(",", ".")) if "soil_temperature_50cm" in usable_column_names else None,
+                soil_temperature_60cm=float(row[usable_column_names["soil_temperature_60cm"]].replace(",", ".")) if "soil_temperature_60cm" in usable_column_names else None,
+
+                solar_irradiance_copernicus=float(row[usable_column_names["solar_irradiance_copernicus"]]) if "solar_irradiance_copernicus" in usable_column_names else None,
+
+                dataset_id=new_dataset.id
+            )
+        except HTTPException:
+            crud.dataset.remove(db=db, id=new_dataset.id)
+
             raise HTTPException(
                 status_code=400,
-                detail="Error during upload, file does not conform to standard (missing columns), please format accordingly."
-            )
-
-        # Might raise exception due to wrong data in wrong columns (swapped date and float format, causes exception in strptime)
-        try:
-            obj_in = CreateData(
-                date=datetime.datetime.strptime(row[0], "%Y-%m-%d"),
-                time=datetime.datetime.strptime(row[1], "%H:%M:%S").time(),
-                nuts3=row[2],
-                nuts2=row[3],
-                temperature_air=float(row[4].replace(",", ".")) if row[4] != "" else None,
-                relative_humidity=float(row[5].replace(",", ".")) if row[5] != "" else None,
-                precipitation=float(row[6].replace(",", ".")) if row[6] != "" else None,
-                wind_speed=float(row[7].replace(",", ".")) if row[7] != "" else None,
-                wind_direction=float(row[8].replace(",", ".")) if row[8] != "" else None,
-                wind_gust=float(row[9].replace(",", ".")) if row[9] != "" else None,
-                atmospheric_pressure=float(row[10].replace(",", ".")) if row[10] != "" else None,
-                relative_humidity_canopy=float(row[11].replace(",", ".")) if row[11] != "" else None,
-                temperature_canopy=float(row[12].replace(",", ".")) if row[12] != "" else None,
-                solar_irradiance_copernicus=float(row[13].replace(",", ".")) if row[13] != "" else None,
-                dataset_id=new_dataset.id
+                detail="Error when parsing row, present leaf_wetness data is out of bounds, bounds: [0, 1], row in question: {}".format(row)
             )
         except Exception:
             crud.dataset.remove(db=db, id=new_dataset.id)
 
             raise HTTPException(
                 status_code=400,
-                detail="Error when parsing row, sequence of data is wrong, row in question ({})".format(row)
+                detail="Error when parsing row, data format unexpected (might be wrong data in wrong column, number in descriptor), row in question (might be missing date or time as well) ({})".format(row)
             )
 
         rows.append(obj_in)

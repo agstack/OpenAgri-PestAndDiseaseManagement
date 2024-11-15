@@ -1,11 +1,7 @@
-import traceback
-
-from fastapi.encoders import jsonable_encoder
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
-from models import Rule, Condition
+from models import Rule
 from schemas import CreateRule, UpdateRule
 
 

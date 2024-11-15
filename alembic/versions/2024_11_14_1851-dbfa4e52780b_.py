@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 604c4e937071
+Revision ID: dbfa4e52780b
 Revises: 
-Create Date: 2024-11-14 10:45:18.917255
+Create Date: 2024-11-14 18:51:44.678115
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '604c4e937071'
+revision: str = 'dbfa4e52780b'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,7 +28,7 @@ def upgrade() -> None:
     sa.UniqueConstraint('id')
     )
     op.create_table('dataset',
-    sa.Column('id', sa.UUID(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
@@ -74,19 +74,28 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('date', sa.Date(), nullable=True),
     sa.Column('time', sa.Time(), nullable=True),
-    sa.Column('nuts3', sa.String(), nullable=True),
-    sa.Column('nuts2', sa.String(), nullable=True),
-    sa.Column('temperature_air', sa.Float(), nullable=True),
-    sa.Column('relative_humidity', sa.Float(), nullable=True),
-    sa.Column('precipitation', sa.Float(), nullable=True),
-    sa.Column('wind_speed', sa.Float(), nullable=True),
-    sa.Column('wind_direction', sa.Float(), nullable=True),
-    sa.Column('wind_gust', sa.Float(), nullable=True),
+    sa.Column('parcel_location', sa.String(), nullable=True),
+    sa.Column('atmospheric_temperature', sa.Float(), nullable=True),
+    sa.Column('atmospheric_temperature_daily_min', sa.Float(), nullable=True),
+    sa.Column('atmospheric_temperature_daily_max', sa.Float(), nullable=True),
+    sa.Column('atmospheric_temperature_daily_average', sa.Float(), nullable=True),
+    sa.Column('atmospheric_relative_humidity', sa.Integer(), nullable=True),
     sa.Column('atmospheric_pressure', sa.Float(), nullable=True),
-    sa.Column('relative_humidity_canopy', sa.Float(), nullable=True),
-    sa.Column('temperature_canopy', sa.Float(), nullable=True),
+    sa.Column('precipitation', sa.Float(), nullable=True),
+    sa.Column('average_wind_speed', sa.Float(), nullable=True),
+    sa.Column('wind_direction', sa.String(), nullable=True),
+    sa.Column('wind_gust', sa.Float(), nullable=True),
+    sa.Column('leaf_relative_humidity', sa.Float(), nullable=True),
+    sa.Column('leaf_temperature', sa.Float(), nullable=True),
+    sa.Column('leaf_wetness', sa.Float(), nullable=True),
+    sa.Column('soil_temperature_10cm', sa.Float(), nullable=True),
+    sa.Column('soil_temperature_20cm', sa.Float(), nullable=True),
+    sa.Column('soil_temperature_30cm', sa.Float(), nullable=True),
+    sa.Column('soil_temperature_40cm', sa.Float(), nullable=True),
+    sa.Column('soil_temperature_50cm', sa.Float(), nullable=True),
+    sa.Column('soil_temperature_60cm', sa.Float(), nullable=True),
     sa.Column('solar_irradiance_copernicus', sa.Float(), nullable=True),
-    sa.Column('dataset_id', sa.UUID(), nullable=False),
+    sa.Column('dataset_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['dataset_id'], ['dataset.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
