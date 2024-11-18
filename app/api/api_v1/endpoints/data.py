@@ -53,8 +53,6 @@ async def upload(
             detail="Error, dataset with same filename already uploaded, please rename your dataset"
         )
 
-    new_dataset = crud.dataset.create(db=db, obj_in=CreateDataset(name=csv_file.filename))
-
     csv_reader = reader(iterdecode(csv_file.file, "utf-8-sig"), delimiter=";")
 
     # Parse the .csv headers
@@ -64,8 +62,6 @@ async def upload(
 
     # If there are more columns than what is expected, decline the dataset
     if len(headers) > len(possible_column_names):
-        crud.dataset.remove(db=db, id=new_dataset.id)
-
         raise HTTPException(
             status_code=400,
             detail="Error, dataset has more than {} columns, not supported, please conform to required dataset format".format(len(possible_column_names))
@@ -73,16 +69,12 @@ async def upload(
 
     # if there is no useful information then decline the dataset (see comment #A)
     if len(headers) < 3:
-        crud.dataset.remove(db=db, id=new_dataset.id)
-
         raise HTTPException(
             status_code=400,
             detail="Error, won't accept dataset with less than 3 columns, please provide more information in the dataset"
         )
 
     if "date" not in headers or "time" not in headers:
-        crud.dataset.remove(db=db, id=new_dataset.id)
-
         raise HTTPException(
             status_code=400,
             detail="Error, can't upload dataset with no date or time information"
@@ -101,12 +93,12 @@ async def upload(
     # Refuse to accept dataset if there is only date+time information.
     # If but one of these is missing, then we have date+something or time+something which is again, useless.
     if len(usable_column_names.items()) < 3:
-        crud.dataset.remove(db=db, id=new_dataset.id)
-
         raise HTTPException(
             status_code=400,
             detail="Error, .csv contains two or less usable columns, please upload a file with more columns"
         )
+
+    new_dataset = crud.dataset.create(db=db, obj_in=CreateDataset(name=csv_file.filename))
 
     rows = []
     for row in csv_reader:
