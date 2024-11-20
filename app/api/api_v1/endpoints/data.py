@@ -7,7 +7,7 @@ import crud
 import utils
 from api import deps
 from models import User
-from schemas import Message, CreateData, CreateDataset
+from schemas import Message, CreateData, BaseDataset
 
 from csv import reader
 from codecs import iterdecode
@@ -98,7 +98,7 @@ async def upload(
             detail="Error, .csv contains two or less usable columns, please upload a file with more columns"
         )
 
-    new_dataset = crud.dataset.create(db=db, obj_in=CreateDataset(name=csv_file.filename))
+    new_dataset = crud.dataset.create(db=db, obj_in=BaseDataset(name=csv_file.filename))
 
     rows = []
     for row in csv_reader:
