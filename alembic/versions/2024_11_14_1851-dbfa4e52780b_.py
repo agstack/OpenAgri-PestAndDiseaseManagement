@@ -79,7 +79,7 @@ def upgrade() -> None:
     sa.Column('atmospheric_temperature_daily_min', sa.Float(), nullable=True),
     sa.Column('atmospheric_temperature_daily_max', sa.Float(), nullable=True),
     sa.Column('atmospheric_temperature_daily_average', sa.Float(), nullable=True),
-    sa.Column('atmospheric_relative_humidity', sa.Integer(), nullable=True),
+    sa.Column('atmospheric_relative_humidity', sa.Float(), nullable=True),
     sa.Column('atmospheric_pressure', sa.Float(), nullable=True),
     sa.Column('precipitation', sa.Float(), nullable=True),
     sa.Column('average_wind_speed', sa.Float(), nullable=True),

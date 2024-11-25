@@ -16,7 +16,7 @@ class Data(Base):
     atmospheric_temperature_daily_min = Column(Float, nullable=True, info={"unit_of_measure": "celsius"})
     atmospheric_temperature_daily_max = Column(Float, nullable=True, info={"unit_of_measure": "celsius"})
     atmospheric_temperature_daily_average = Column(Float, nullable=True, info={"unit_of_measure": "celsius"})
-    atmospheric_relative_humidity = Column(Integer, nullable=True, info={"unit_of_measure": "percentage"})
+    atmospheric_relative_humidity = Column(Float, nullable=True, info={"unit_of_measure": "percentage"})
     atmospheric_pressure = Column(Float, nullable=True, info={"unit_of_measure": "mbar"})
 
     precipitation = Column(Float, nullable=True, info={"unit_of_measure": "mm"})
