@@ -6,10 +6,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, Query
 from crud.base import CRUDBase
 from models import Data
-from schemas import CreateData, UpdateData
+from schemas import CreateData
 
 
-class CrudData(CRUDBase[Data, CreateData, UpdateData]):
+class CrudData(CRUDBase[Data, CreateData, dict]):
 
     def get_all(self, db: Session):
         return db.query(Data).all()

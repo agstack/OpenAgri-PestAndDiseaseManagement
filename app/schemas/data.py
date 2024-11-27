@@ -40,37 +40,6 @@ class CreateData(BaseModel):
 
     dataset_id: int
 
-class UpdateData(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    parcel_location: Optional[str]
-
-    atmospheric_temperature: Optional[float]
-    atmospheric_temperature_daily_min: Optional[float]
-    atmospheric_temperature_daily_max: Optional[float]
-    atmospheric_temperature_daily_average: Optional[float]
-    atmospheric_relative_humidity: Optional[float]
-    atmospheric_pressure: Optional[float]
-
-    precipitation: Optional[float]
-
-    average_wind_speed: Optional[float]
-    wind_direction: Optional[str]
-    wind_gust: Optional[float]
-
-    leaf_relative_humidity: Optional[float]
-    leaf_temperature: Optional[float]
-    leaf_wetness: Optional[float]
-
-    soil_temperature_10cm: Optional[float]
-    soil_temperature_20cm: Optional[float]
-    soil_temperature_30cm: Optional[float]
-    soil_temperature_40cm: Optional[float]
-    soil_temperature_50cm: Optional[float]
-    soil_temperature_60cm: Optional[float]
-
-    solar_irradiance_copernicus: Optional[float]
-
 
 class DataDB(BaseModel):
     model_config = ConfigDict(from_attributes=True)
