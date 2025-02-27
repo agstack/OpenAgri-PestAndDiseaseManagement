@@ -36,9 +36,258 @@ docker compose build
 docker compose up
 ```
 
-The application will be served on http://127.0.0.1:80 (I.E. typing localhost/docs in your browser will load the swagger documentation)
+The application will be served on http://127.0.0.1:{SERVICE_PORT}, where SERVICE_PORT is the value read from the .env (default 8003)
 
 # Documentation
+
+The basic flow for this service is as follows:
+1. The user registers and/or logs in;
+2. The user creates their parcel/s
+3. The user creates one or more pest and/or disease models
+4. The user queries the system for either risk index or growing degree days (GDD) for pest and disease models respectively
+
+# A list of APIs
+A full list of APIs can be viewed [here](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/vlf-stefan-drobic/71d21b192db0b968278a48d6e5e6d9cb/raw/dd4bd697421dba235210040fa272a0bb1fbaaa5c/gistfile1.txt).
+
+<h3> POST </h3>
+
+```
+/api/v1/login/access-token/
+```
+
+<h3> Request body: </h3>
+
+```json
+{
+  "username": "user1",
+  "password": "my_passWord3!"
+}
+```
+
+<h3> Response body: </h3>
+
+```json
+{
+  "access_token": "access_token",
+  "token_type": "bearer"
+}
+```
+
+<h3> POST </h3>
+
+```
+/api/v1/parcel/
+```
+
+<h3> Request body: </h3>
+
+```json
+{
+  "name": "my_parcel_1",
+  "latitude": 14.5,
+  "longitude": 12.3
+}
+```
+
+<h3> Response body: </h3>
+
+```json
+{
+  "message": "Successfully created parcel!"
+}
+```
+
+<h3> POST </h3>
+
+```
+/api/v1/parcel/wkt-format/
+```
+
+<h3> Request body: </h3>
+
+```json
+{
+  "name": "my_parcel_2",
+  "wkt_polygon": "POLYGON ((25.2 16.2, 16.2 16.15, 17.2 15.2, 20.1 20.1, 25.2 16.2))"
+}
+```
+
+<h3> Response body: </h3>
+
+```json
+{
+  "message": "Successfully created parcel!"
+}
+```
+
+You can learn more about the WKT format standard [here](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) or [here](https://shapely.readthedocs.io/en/stable/reference/shapely.to_wkt.html#shapely.to_wkt).
+
+<h3> POST </h3>
+
+```
+/api/v1/disease/
+```
+
+<h3> Request body: </h3>
+
+```json
+{
+  "name": "Colorado potato beetle",
+  "eppo_code": "LPTNDE",
+  "base_gdd": 0,
+  "description": "The Colorado potato beetle is a beetle known for being a major pest of potato crops.",
+  "gdd_points": [
+    {
+      "start": 0,
+      "end": 120,
+      "description": "Not susceptible - do not treat"
+    },
+    {
+      "start": 120,
+      "end": 185,
+      "description": "Most effective time to apply Btt"
+    },
+    {
+      "start": 185,
+      "end": 240,
+      "description": "Most effective time to apply conventional pesticides"
+    },
+    {
+      "start": 240,
+      "end": 300,
+      "description": "No recommendation found in documentation"
+    },
+    {
+      "start": 300,
+      "end": 400,
+      "description": "No recommendation found in documentation"
+    },
+    {
+      "start": 400,
+      "end": 675,
+      "description": "Not susceptible -- do not treat"
+    }
+  ]
+}
+```
+
+<h3> Response body: </h3>
+
+```json
+{
+  "id": "146f4148-72f1-49d8-9349-212a60263070",
+  "name": "Colorado potato beetle",
+  "eppo_code": "LPTNDE",
+  "base_gdd": 0,
+  "description": "The Colorado potato beetle is a beetle known for being a major pest of potato crops.",
+  "gdd_points": [
+    {
+      "start": 0,
+      "end": 120,
+      "description": "Not susceptible - do not treat"
+    },
+    {
+      "start": 120,
+      "end": 185,
+      "description": "Most effective time to apply Btt"
+    },
+    {
+      "start": 185,
+      "end": 240,
+      "description": "Most effective time to apply conventional pesticides"
+    },
+    {
+      "start": 240,
+      "end": 300,
+      "description": "No recommendation found in documentation"
+    },
+    {
+      "start": 300,
+      "end": 400,
+      "description": "No recommendation found in documentation"
+    },
+    {
+      "start": 400,
+      "end": 675,
+      "description": "Not susceptible -- do not treat"
+    }
+  ]
+}
+```
+
+<h3> GET </h3>
+
+```
+/api/v1/tool/calculate-gdd/parcel/{parcel_id}/model/{model_ids}/verbose/{from_date}/from/{to_date}/to/
+```
+
+<h3> Request body: </h3>
+
+Nothing
+
+<h3> Parameters: </h3>
+
+```
+from_date, to_date, parcel_id, model_ids
+```
+
+<h3> Response body: </h3>
+
+```json
+{
+  "models": [
+    {
+      "name": "Colorado potato beetle",
+      "eppo_code": "LPTNDE",
+      "base_gdd": 0,
+      "description": "The Colorado potato beetle is a beetle known for being a major pest of potato crops.",
+      "gdd_values": [
+        {
+          "date": "2025-01-15",
+          "gdd_value": 15,
+          "accumulated_gdd": 15,
+          "descriptor": "Not susceptible - do not treat"
+        },
+        {
+          "date": "2025-01-16",
+          "gdd_value": 5,
+          "accumulated_gdd": 20,
+          "descriptor": "Not susceptible - do not treat"
+        },
+        {
+          "date": "2025-01-17",
+          "gdd_value": 27,
+          "accumulated_gdd": 47,
+          "descriptor": "Not susceptible - do not treat"
+        },
+        {
+          "date": "2025-01-18",
+          "gdd_value": 30,
+          "accumulated_gdd": 77,
+          "descriptor": "Not susceptible - do not treat"
+        },
+        {
+          "date": "2025-01-19",
+          "gdd_value": 30,
+          "accumulated_gdd": 107,
+          "descriptor": "Not susceptible - do not treat"
+        },
+        {
+          "date": "2025-01-20",
+          "gdd_value": 30,
+          "accumulated_gdd": 137,
+          "descriptor": "Most effective time to apply Btt"
+        }
+      ]
+    }
+  ]
+}
+```
+
+The above example is returned when querying with the following parameters: \
+from_date - 2025-01-15 \
+to_date - 2025-01-20 \
+parcel and model ids - dependant on parcel upload and model creation.
 
 <h3> POST </h3>
 
@@ -94,9 +343,6 @@ date;leaf_wetness;time;leaf_temperature;leaf_density \
 Reasons:
 1. The leaf_wetness metric can only be expressed as a value [0, 1], the first row shows 1.25 which is outside this range.
 2. The last row has a leaf_temperature of "eleven" which will not be parsed, it should be "11".
-
-Note: \
-The leaf_density column would not provide an issue when parsing, this column would just be skipped.
 
 Response example:
 
@@ -343,7 +589,7 @@ Response example:
 ```
 
 Note: \
-This API functions the same as the .../verbose one, while additionally filter out any risk calculations that aren't "High".
+This API functions the same as the .../verbose one, while additionally filtering out any risk calculations that aren't "High".
 
 <h3> GET </h3>
 
@@ -416,7 +662,7 @@ Response example:
 This API returns a list of all rules stored in the system. \
 Rules make up a pest model, but they can also be added separately.
 
-The above rules, translated into a friendlier format: \
+The above rules, translated into a more human-readable format: \
 1. H > 80% AND T <= 10 AND P == 10 \
 2. H > 80% AND 10 < T <= 20 AND P == 10
 
@@ -424,29 +670,6 @@ Where:
 1. H = Humidity
 2. T = Atmospheric temperature
 3. P = Precipitation
-
-<h3> DELETE </h3>
-
-```
-/api/v1/rule/{rule_id}
-```
-
-Path parameters:
-1. rule_id: the id of the rule that should be deleted.
-
-Request body:
-
-Nothing
-
-Response example:
-
-```json
-{
-  "message": "Successfully removed rule!"
-}
-```
-
-This API removes a rule via its id.
 
 <h3> POST </h3>
 
@@ -499,16 +722,6 @@ Response example:
 ```
 
 This API creates a single rule that is added to an existing pest model.
-
-# General guidance
-
-in general, the way a user would attempt to use this service is the following:
-
-1. Upload a dataset with weather data via the POST /api/v1/data/upload/ API
-2. Create a pest model (POST /api/v1/pest-model/) with accompanying rules (POST /api/v1/rule/)
-3. Call the GET /api/v1/tool/calculate-risk-index/weather/{weather_dataset_id}/model/{model_ids}/verbose API for risk calculations
-
-For more information about the APIs and schemas, please view the swagger documentation.
 
 # Contribution
 Please contact the maintainer of this repository.
