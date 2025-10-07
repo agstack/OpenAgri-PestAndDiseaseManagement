@@ -127,7 +127,7 @@ Each record corresponds to one day and reports:
 
 ---
 
-## 6) Understanding the GDD Graph
+## 5) Understanding the GDD Graph
 
 | Line | Meaning | Interpretation |
 |------|----------|----------------|
@@ -143,7 +143,7 @@ Each record corresponds to one day and reports:
 
 ---
 
-## 7) Insights from the GDD Graph
+## 6) Insights from the GDD Graph
 
 The accumulated GDD curve can be directly compared with **GDD thresholds** defined in your disease or pest model.  
 For example:
@@ -159,7 +159,7 @@ By aligning these thresholds with the **accumulated GDD line**, farmers and agro
 
 ---
 
-## 8) Example script
+## 7) Example script
 
 [Here](calculate_gdd.py) you can find a Python example that:
 - Uploads a parcel and disease model,
@@ -177,7 +177,7 @@ python calculate_gdd.py   --base-url https://pdm.test.horizon-openagri.eu   --to
 
 ---
 
-## 9) Troubleshooting
+## 8) Troubleshooting
 
 | Issue | Possible Cause | Fix |
 |--------|----------------|-----|
@@ -188,7 +188,7 @@ python calculate_gdd.py   --base-url https://pdm.test.horizon-openagri.eu   --to
 
 ---
 
-### ✅ Summary
+### Summary
 The **GDD API** quantifies the thermal accumulation for a parcel-model combination.  
 The resulting graph illustrates both **short-term heat variations** and **long-term crop or pest development trends**, enabling **data-driven agricultural decisions**.
 
