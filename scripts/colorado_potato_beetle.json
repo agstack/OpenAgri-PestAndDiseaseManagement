@@ -1,0 +1,38 @@
+{
+  "name": "Colorado potato beetle",
+  "eppo_code": "LPTNDE",
+  "base_gdd": 0,
+  "description": "The Colorado potato beetle is a beetle known for being a major pest of potato crops.",
+  "gdd_points": [
+    {
+      "start": 0,
+      "end": 120,
+      "descriptor": "Not susceptible - do not treat"
+    },
+    {
+      "start": 120,
+      "end": 185,
+      "descriptor": "Most effective time to apply Btt"
+    },
+    {
+      "start": 185,
+      "end": 240,
+      "descriptor": "Most effective time to apply conventional pesticides"
+    },
+    {
+      "start": 240,
+      "end": 300,
+      "descriptor": "No recommendation found in documentation"
+    },
+    {
+      "start": 300,
+      "end": 400,
+      "descriptor": "No recommendation found in documentation"
+    },
+    {
+      "start": 400,
+      "end": 675,
+      "descriptor": "Not susceptible -- do not treat"
+    }
+  ]
+}

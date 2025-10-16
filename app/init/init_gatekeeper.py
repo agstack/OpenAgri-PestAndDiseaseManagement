@@ -5,14 +5,15 @@ from core import settings
 from requests.exceptions import RequestException
 
 
-from api.api_v1.endpoints import operator, pest_model, rule, tool, unit
+from api.api_v1.endpoints import operator, pest_model, rule, tool, unit, model, disease
+
 
 def register_apis_to_gatekeeper():
 
     # Login
     try:
         at = requests.post(
-            url=str(settings.GATEKEEPER_BASE_URL) + "/api/login/",
+            url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/login/",
             headers={"Content-Type": "application/json"},
             json={
                 "username": "{}".format(settings.GATEKEEPER_USERNAME),
@@ -34,23 +35,25 @@ def register_apis_to_gatekeeper():
     apis_to_register.include_router(rule.router, prefix="/rule")
     apis_to_register.include_router(tool.router, prefix="/tool")
     apis_to_register.include_router(unit.router, prefix="/unit")
+    apis_to_register.include_router(model.router, prefix="/model")
+    apis_to_register.include_router(disease.router, prefix="/disease")
 
     for api in apis_to_register.routes:
         try:
             requests.post(
-                url=str(settings.GATEKEEPER_BASE_URL) + "/api/register_service/",
+                url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/register_service/",
                 headers={"Content-Type": "application/json", "Authorization" : "Bearer {}".format(access)},
                 json={
                     "base_url": "http://{}:{}/".format(settings.SERVICE_NAME, settings.SERVICE_PORT),
                     "service_name": settings.SERVICE_NAME,
-                    "endpoint": "api/v1/" + api.path.strip("/"),
+                    "endpoint": "api/v1/" + api.path.lstrip("/"),
                     "methods": list(api.methods)
                 }
             )
         except RequestException:
             try:
                 requests.post(
-                    url=str(settings.GATEKEEPER_BASE_URL) + "/api/logout/",
+                    url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/logout/",
                     headers={"Content-Type": "application/json"},
                     json={"refresh": refresh}
                 )
@@ -61,7 +64,7 @@ def register_apis_to_gatekeeper():
     # Logout
     try:
         requests.post(
-            url=str(settings.GATEKEEPER_BASE_URL) + "/api/logout/",
+            url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/logout/",
             headers={"Content-Type": "application/json"},
             json={"refresh": refresh}
         )

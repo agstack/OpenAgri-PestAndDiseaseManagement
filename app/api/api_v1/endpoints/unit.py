@@ -3,18 +3,16 @@ from sqlalchemy.orm import Session
 
 import crud
 from api import deps
-from models import User
 from schemas import Units, UnitCreate, Message, UnitDelete
 from crud import unit
 
 router = APIRouter()
 
 
-@router.post("/", response_model=Message)
+@router.post("/", response_model=Message, dependencies=[Depends(deps.get_jwt)])
 def create_unit(
         unit_in: UnitCreate,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ):
     """
     Creates a user defined unit
@@ -33,10 +31,9 @@ def create_unit(
     return Message(message="Successfully created!")
 
 
-@router.get("/", response_model=Units)
+@router.get("/", response_model=Units, dependencies=[Depends(deps.get_jwt)])
 def get_units(
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ):
     """
     Returns a list of symbols that are currently available in the system
@@ -47,11 +44,10 @@ def get_units(
     return Units(units=units_db)
 
 
-@router.delete("/")
+@router.delete("/", dependencies=[Depends(deps.get_jwt)])
 def delete_unit(
         unit_id: UnitDelete,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ):
     """
     Delete a unit

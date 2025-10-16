@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from typing import Any
 
 from api import deps
+from api.deps import is_not_using_gatekeeper
 from models import User
 from schemas import Message, UserCreate, UserMe
 from crud import user
@@ -34,7 +35,7 @@ def register(
     if settings.USING_GATEKEEPER:
         try:
             response = requests.post(
-                url=str(settings.GATEKEEPER_BASE_URL) + "/api/register/",
+                url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/register/",
                 headers={"Content-Type": "application/json"},
                 json={"username": user_information.email,
                       "email": user_information.email, "password": user_information.password}
@@ -68,7 +69,7 @@ def register(
     return response
 
 
-@router.get("/me/", response_model=UserMe)
+@router.get("/me/", response_model=UserMe, dependencies=[Depends(is_not_using_gatekeeper)])
 def get_me(
         current_user: User = Depends(deps.get_current_user)
 ) -> Any:

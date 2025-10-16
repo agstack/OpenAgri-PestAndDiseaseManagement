@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 
 import crud
 from api import deps
-from models import User
 from schemas import Message, CreateData, ListData
 
 from utils import get_logger
@@ -14,10 +13,9 @@ from utils import get_logger
 logger = get_logger(api_path_name=__name__)
 router = APIRouter()
 
-@router.get("/", response_model=ListData)
+@router.get("/", response_model=ListData, dependencies=[Depends(deps.get_jwt)])
 def get_all_data(
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> ListData:
     """
     This API returns all weather data present in the db.
@@ -30,13 +28,12 @@ def get_all_data(
     return ListData(list_of_data=response_object)
 
 
-@router.get("/parcel/{parcel_id}/from/{start}/to/{end}", response_model=ListData)
+@router.get("/parcel/{parcel_id}/from/{start}/to/{end}/", response_model=ListData, dependencies=[Depends(deps.get_jwt)])
 def get_data_for_parcel(
         parcel_id: int,
         start: datetime.date,
         end: datetime.date,
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> ListData:
     """
     This API returns weather data for a date interval, for some parcel
@@ -49,12 +46,11 @@ def get_data_for_parcel(
     return ListData(list_of_data=response_object)
 
 
-@router.post("/{parcel_id}", response_model=Message)
+@router.post("/{parcel_id}/", response_model=Message, dependencies=[Depends(deps.get_jwt)])
 def upload_weather_data_for_parcel(
         parcel_id: int,
         data: List[CreateData],
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> Message:
     """
     Manually upload one or more weather data points.
@@ -91,11 +87,11 @@ def upload_weather_data_for_parcel(
 
     return response_object
 
-@router.delete("/{data_id}", response_model=Message)
+
+@router.delete("/{data_id}/", response_model=Message, dependencies=[Depends(deps.get_jwt)])
 def remove_data_point(
         data_id: int,
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> Message:
     """
     Remove a single weather datapoint

@@ -1,5 +1,5 @@
 import traceback
-from typing import List
+from typing import List, Dict, Any, Optional
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.exc import SQLAlchemyError
@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from crud.base import CRUDBase
 from models import Disease, GDDInterval
-from schemas import CreateDisease, GDDIntervalInput
+from schemas import CreateDisease, GDDIntervalInput, UpdateDiseaseModel
 
 
 class CrudDisease(CRUDBase[Disease, CreateDisease, dict]):
@@ -52,6 +52,46 @@ class CrudDisease(CRUDBase[Disease, CreateDisease, dict]):
         db.refresh(disease_db_obj)
 
         return disease_db_obj
+
+    def update_with_gdd_points_overwrite(
+            self,
+            db: Session,
+            db_obj: Disease,
+            obj_in: UpdateDiseaseModel | Dict[str, Any]
+    ) -> Optional[Any]:
+        obj_data = jsonable_encoder(db_obj)
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.model_dump(exclude_unset=True)
+
+        gdd_points = None
+        if "gdd_points" in update_data:
+            interval_data: list = update_data.pop("gdd_points", [])
+
+            gdd_points = [GDDInterval(**x) for x in interval_data]
+            for gdd_point in gdd_points:
+                gdd_point.disease_id = db_obj.id
+
+            db.add_all(gdd_points)
+
+        for field in obj_data:
+            if field in update_data:
+                setattr(db_obj, field, update_data[field])
+
+        if gdd_points:
+            setattr(db_obj, "gdd_points", gdd_points)
+
+        db.add(db_obj)
+        try:
+            db.commit()
+        except SQLAlchemyError:
+            traceback.print_exc()
+            return None
+
+        db.refresh(db_obj)
+
+        return db_obj
 
 
 disease = CrudDisease(Disease)

@@ -1,21 +1,21 @@
 from typing import Annotated
 
 import requests
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
+from requests import RequestException
 from sqlalchemy.orm import Session
 
-from core import security
 from core.security import *
 from core.config import settings
 from api import deps
 from crud import user
-from schemas import Token
-from utils import get_logger
+from schemas import Token, Message
+from utils import get_logger, gatekeeper_logout
 
 logger = get_logger(api_path_name=__name__)
-router = APIRouter()
 
+router = APIRouter()
 
 @router.post("/access-token/", response_model=Token)
 def login_access_token(
@@ -23,48 +23,82 @@ def login_access_token(
         db: Session = Depends(deps.get_db)
 ) -> Token:
     """
-    OAuth2 compatible token login, get an access token for future requests
+    OAuth2 compatible token login, get an [access token, refresh token] pair for future requests
     """
 
     if not settings.USING_GATEKEEPER:
+
         user_db = user.authenticate(
-            db, email=form_data.username, password=form_data.password
+            db=db,
+            email=form_data.username,
+            password=form_data.password
         )
 
         if not user_db:
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+            raise HTTPException(
+                status_code=400,
+                detail="Incorrect email or password"
+            )
 
-        at = Token(
-            access_token=security.create_access_token(
-                user_db.id, expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRATION_TIME)
-            ),
+        response_token = Token(
+            access_token=create_token(user_db.id, settings.ACCESS_TOKEN_EXPIRATION_TIME),
+            refresh_token=create_token(user_db.id, settings.REFRESH_TOKEN_EXPIRATION_TIME),
             token_type="bearer"
         )
     else:
-        response = requests.post(
-            url=settings.GATEKEEPER_BASE_URL.unicode_string() + "api/login/",
-            headers={"Content-Type": "application/json"},
-            json={"username": "{}".format(form_data.username), "password": "{}".format(form_data.password)}
-        )
+        try:
+            response = requests.post(
+                url=settings.GATEKEEPER_BASE_URL.unicode_string() + "api/login/",
+                headers={"Content-Type": "application/json"},
+                json={"username": "{}".format(form_data.username), "password": "{}".format(form_data.password)}
+            )
+        except RequestException:
+            raise HTTPException(
+                status_code=400,
+                detail="Network error during communication with GateKeeper, please try again"
+            )
 
         if response.status_code == 401:
             raise HTTPException(
                 status_code=400,
-                detail="Error, no active account found with these credentials."
+                detail="Error, no active account found with these credentials"
             )
 
-        if "access" not in response.json():
+        if response.status_code == 400:
             raise HTTPException(
                 status_code=400,
-                detail="Error, no access token found in response from gk."
+                detail="Error, missing username/password values, please enter your username and/or password"
             )
 
-        at = Token(
-            access_token=response.json()["access"],
-            token_type="bearer"
-        )
+        response_json = response.json()
 
-    if logger:
-        logger.info("Logged in")
+        if response_json["success"]:
+            response_token = Token(
+                access_token=response.json()["access"],
+                refresh_token=response.json()["refresh"],
+                token_type="bearer"
+            )
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Error, unsuccessful login attempt, GateKeeper returned 200 with success==False"
+            )
 
-    return at
+    return response_token
+
+
+@router.post("/logout/", response_model=Message, dependencies=[Depends(deps.is_using_gatekeeper), Depends(deps.get_jwt)])
+def logout(
+        refresh_token: str = Depends(deps.get_refresh_token)
+) -> Message:
+    """
+    Logout
+    """
+
+    gatekeeper_logout(refresh_token)
+
+    response_message = Message(
+        message="Successfully logged out!"
+    )
+
+    return response_message

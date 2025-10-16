@@ -9,7 +9,13 @@ import utils
 import uuid
 
 from models import PestModel, Parcel
+from .wdutils import openmeteo_friendly_variables
 
+prob_values = {
+    "low": 1,
+    "moderate": 2,
+    "high": 3
+}
 
 def calculate_risk_index_probability(db: Session, parcel: Parcel, pest_models: List[PestModel],
                                      from_date: datetime.date, to_date:datetime.date,
@@ -99,6 +105,110 @@ def calculate_risk_index_probability(db: Session, parcel: Parcel, pest_models: L
 
     doc = {
         "@context": context,
+        "@graph": graph
+    }
+
+    return doc
+
+def calculate_risk_index_probability_wd(
+        parcel: dict,
+        pest_models: List[PestModel],
+        weather_data: dict,
+        lat: float,
+        lon: float,
+        parameter: Optional[str] = None
+):
+    graph = []
+
+    for pm in pest_models:
+        calculated_risks = []
+
+        for hour in weather_data["data"]:
+
+            current_rule_risk_index = "low"
+            for rule in pm.rules:
+
+                # Filter, if parameter set to "high", skip low and medium ones
+                if parameter and prob_values[rule.probability_value] < prob_values[parameter]:
+                    continue
+
+                # Skip these since their calculation wouldn't meaningfully add to the current model limits
+                if rule.probability_value and prob_values[rule.probability_value] <= prob_values[current_rule_risk_index]:
+                    continue
+
+                current_rule_applies = True
+                for cond in rule.conditions:
+                    condition_applies = eval("{} {} {}".format(hour["values"][openmeteo_friendly_variables[cond.unit.name]], cond.operator.symbol, cond.value))
+                    if not condition_applies:
+                        current_rule_applies = False
+                        break
+
+                if current_rule_applies:
+                    current_rule_risk_index = rule.probability_value
+
+            if not parameter:
+                calculated_risks.append(
+                    {
+                        "@id": "urn:openagri:pestInfectationRisk:obs2:{}".format(uuid.uuid4()),
+                        "@type": ["Observation", "PestInfestationRisk"],
+                        "phenomenonTime": "{}".format(hour["timestamp"]),
+                        "hasSimpleResult": "{}".format(current_rule_risk_index)
+                    }
+                )
+                continue
+
+            if parameter and prob_values[current_rule_risk_index] >= prob_values[parameter]:
+                calculated_risks.append(
+                    {
+                        "@id": "urn:openagri:pestInfectationRisk:obs2:{}".format(uuid.uuid4()),
+                        "@type": ["Observation", "PestInfestationRisk"],
+                        "phenomenonTime": "{}".format(hour["timestamp"]),
+                        "hasSimpleResult": "{}".format(current_rule_risk_index)
+                    }
+                )
+                continue
+
+
+        graph_element = {
+            "@id": "urn:openagri:pestInfectationRisk:{}".format(uuid.uuid4()),
+            "@type": ["ObservationCollection"],
+            "description": "{} pest infectation risk forecast in x ".format(pm.name),
+            "observedProperty": {
+                "@id": "urn:openagri:pestInfectationRisk:op:{}".format(uuid.uuid4()),
+                "@type": ["ObservableProperty", "PestInfection"],
+                "name": "UNCINE pest infection",
+                "hasAgriPest": {
+                    "@id": "urn:openagri:pest:UNCINE",
+                    "@type": "AgriPest",
+                    "name": "UNCINE",
+                    "description": "Uncinula necator (syn. Erysiphe necator) is a fungus that causes powdery mildew of grape. It is a common pathogen of Vitis species, including the wine grape, Vitis vinifera",
+                    "eppoConcept": "https://gd.eppo.int/taxon/UNCINE"
+                }
+            },
+            "madeBySensor": {
+                "@id": "urn:openagri:pestInfectationRisk:model:{}".format(uuid.uuid4()),
+                "@type": ["Sensor", "AIPestDetectionModel"],
+                "name": "AI pest detaction model xyz"
+            },
+            "hasFeatureOfInterest": {
+                "@id": "urn:openagri:pestInfectationRisk:foi:{}".format(uuid.uuid4()),
+                "@type": ["FeatureOfInterest", "Point"],
+                "long": "{}".format(lon),
+                "lat": "{}".format(lat)
+            },
+            "basedOnWeatherDataset": {
+                "@id": "urn:openagri:weatherDataset:{}".format(parcel["@id"]),
+                "@type": "WeatherDataset",
+                "name": "parcel_name_tba"
+            },
+            "resultTime": "{}".format(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")),
+            "hasMember": calculated_risks
+        }
+
+        graph.append(graph_element)
+
+    doc = {
+        "@context": utils.context,
         "@graph": graph
     }
 

@@ -11,10 +11,9 @@ import pandas as pd
 router = APIRouter()
 
 
-@router.get("/", response_model=PestModels)
+@router.get("/", response_model=PestModels, dependencies=[Depends(deps.get_jwt)])
 def get_pest_models(
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ):
     """
     Returns all pest models
@@ -24,11 +23,10 @@ def get_pest_models(
 
     return PestModels(pests=pest_models_db)
 
-@router.post("/", response_model=PestModelDB)
+@router.post("/", response_model=PestModelDB, dependencies=[Depends(deps.get_jwt)])
 def create_pest_model(
         pm: CreatePestModel,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ):
     """
     Create a base pest model
@@ -36,11 +34,10 @@ def create_pest_model(
 
     return crud.pest_model.create(db=db, obj_in=pm)
 
-@router.post("/upload-excel/", response_model=Message)
+@router.post("/upload-excel/", response_model=Message, dependencies=[Depends(deps.get_jwt)])
 def upload_pest_model(
         excel_file: UploadFile = File(...),
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> Message:
     """
     Upload pest models via a definition file (excel)

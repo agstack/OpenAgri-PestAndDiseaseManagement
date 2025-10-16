@@ -40,6 +40,11 @@ docker compose up
 The application will be served on http://127.0.0.1:{SERVICE_PORT}, where SERVICE_PORT is the value read from the .env (default 8003)
 
 # Documentation
+You can find working examples for GDD and Risk Index calculation in the following pages:
+
+- [GDD](scripts/gdd.md)
+- [Risk Index](scripts/riskindex.md)
+
 A list of APIs can be viewed in the [API.md](https://github.com/openagri-eu/pest-and-disease-management/blob/main/API.md) file, and a full list of APIs can be viewed [here](https://editor-next.swagger.io/?url=https://gist.githubusercontent.com/vlf-stefan-drobic/71d21b192db0b968278a48d6e5e6d9cb/raw/dd4bd697421dba235210040fa272a0bb1fbaaa5c/gistfile1.txt).
 
 The basic flow for this service is as follows:

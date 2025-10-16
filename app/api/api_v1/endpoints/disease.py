@@ -3,16 +3,16 @@ from sqlalchemy.orm import Session
 
 import crud
 from api import deps
-from models import User
-from schemas import ListDisease, InputDisease, DiseaseDB, Message, CreateDisease
+from schemas import ListDisease, InputDisease, DiseaseDB, Message, CreateDisease, UpdateDiseaseModel
 from pydantic import UUID4
+
+from http import HTTPStatus
 
 router = APIRouter()
 
-@router.get("/", response_model=ListDisease)
+@router.get("/", response_model=ListDisease, dependencies=[Depends(deps.get_jwt)])
 def get_all_diseases(
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> ListDisease:
     """
     Returns a list of all diseases
@@ -22,11 +22,10 @@ def get_all_diseases(
 
     return ListDisease(diseases=response)
 
-@router.post("/", response_model=DiseaseDB)
+@router.post("/", response_model=DiseaseDB, dependencies=[Depends(deps.get_jwt)])
 def create_disease(
         input_obj: InputDisease,
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> DiseaseDB:
     """
     Create a new disease
@@ -61,11 +60,10 @@ def create_disease(
     return disease_db
 
 
-@router.get("/{disease_name}", response_model=DiseaseDB)
+@router.get("/{disease_name}/", response_model=DiseaseDB, dependencies=[Depends(deps.get_jwt)])
 def get_by_name(
         disease_name: str,
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> DiseaseDB:
     """
     Returns a disease by name, if it exists
@@ -81,11 +79,10 @@ def get_by_name(
 
     return disease_db
 
-@router.delete("/{disease_id}", response_model=Message)
+@router.delete("/{disease_id}/", response_model=Message, dependencies=[Depends(deps.get_jwt)])
 def remove_disease(
         disease_id: UUID4,
-        db: Session = Depends(deps.get_db),
-        user: User = Depends(deps.get_current_user)
+        db: Session = Depends(deps.get_db)
 ) -> Message:
     """
     Remove a disease by ID
@@ -104,3 +101,27 @@ def remove_disease(
     response_obj = Message(message="Successfully removed disease with ID {}".format(disease_id))
 
     return response_obj
+
+@router.patch("/{disease_id}/", status_code=HTTPStatus.NO_CONTENT, dependencies=[Depends(deps.get_jwt)])
+def patch_disease(
+        disease_id: UUID4,
+        disease_model: UpdateDiseaseModel,
+        db: Session = Depends(deps.get_db)
+):
+    """
+    Patch an existing disease by passing values that should be updated
+    """
+
+    disease_db = crud.disease.get(db=db, id=disease_id)
+
+    if not disease_db:
+        raise HTTPException(
+            status_code=400,
+            detail="Error, cannot update disease model that doesn't exist."
+        )
+
+    disease_unpacked = disease_model.model_dump(exclude_unset=True)
+
+    _ = crud.disease.update_with_gdd_points_overwrite(db=db, db_obj=disease_db, obj_in=disease_unpacked)
+
+    return
