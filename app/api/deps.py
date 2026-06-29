@@ -12,7 +12,7 @@ from core.config import settings
 from db.session import SessionLocal
 from utils import check_token_for_validity
 
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/api/v1/login/access-token/")
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/api/v1/login/access-token/", auto_error=not settings.DISABLE_AUTH)
 
 
 def get_db() -> Generator:
@@ -27,6 +27,8 @@ def get_jwt(
         token: str = Depends(reusable_oauth2),
         db: Session = Depends(get_db)
 ):
+    if settings.DISABLE_AUTH:
+        return "disabled"
     if not token:
         raise HTTPException(
             status_code=403,
@@ -54,6 +56,8 @@ def get_jwt(
 def get_refresh_token(
         refresh_token: str = None
 ):
+    if settings.DISABLE_AUTH:
+        return "disabled"
     if not refresh_token:
         raise HTTPException(
             status_code=401,
@@ -76,6 +80,9 @@ def get_current_user(
         token: str = Depends(get_jwt),
         db: Session = Depends(get_db)
 ) -> User:
+
+    if settings.DISABLE_AUTH:
+        return User(email="admin@local")
 
     user_id = decode_token(token)
 
@@ -103,4 +110,12 @@ def is_not_using_gatekeeper():
         raise HTTPException(
             status_code=400,
             detail="Can't use this API while connected to a gatekeeper"
+        )
+
+
+def is_offline_deployment():
+    if not settings.OFFLINE_DEPLOYMENT:
+        raise HTTPException(
+            status_code=403,
+            detail="This endpoint is only available in offline deployment mode."
         )

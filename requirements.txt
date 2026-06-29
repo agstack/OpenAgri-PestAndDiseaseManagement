@@ -25,3 +25,7 @@ requests-cache==1.2.1
 retry-requests==2.0.0
 numpy==2.2.2
 apscheduler==3.11.0
+
+# agstack-pnd — Pest & Disease model engine (installed from git; not published to PyPI).
+# Pinned to a commit on master for reproducible builds; bump the sha to update.
+agstack-pnd @ git+https://github.com/agstack/opensource-pestmodels.git@bed16428753db9054ed0477276973b0e8e57df83

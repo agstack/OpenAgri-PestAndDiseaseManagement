@@ -1,9 +1,7 @@
 from typing import Annotated
 
-import requests
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from requests import RequestException
 from sqlalchemy.orm import Session
 
 from core.security import *
@@ -12,6 +10,7 @@ from api import deps
 from crud import user
 from schemas import Token, Message
 from utils import get_logger, gatekeeper_logout
+from utils.gatekeeper_client import GatekeeperClient
 
 logger = get_logger(api_path_name=__name__)
 
@@ -46,36 +45,15 @@ def login_access_token(
             token_type="bearer"
         )
     else:
-        try:
-            response = requests.post(
-                url=settings.GATEKEEPER_BASE_URL.unicode_string() + "api/login/",
-                headers={"Content-Type": "application/json"},
-                json={"username": "{}".format(form_data.username), "password": "{}".format(form_data.password)}
-            )
-        except RequestException:
-            raise HTTPException(
-                status_code=400,
-                detail="Network error during communication with GateKeeper, please try again"
-            )
+        response_json = GatekeeperClient(str(settings.GATEKEEPER_BASE_URL)).login(
+            username=form_data.username,
+            password=form_data.password,
+        )
 
-        if response.status_code == 401:
-            raise HTTPException(
-                status_code=400,
-                detail="Error, no active account found with these credentials"
-            )
-
-        if response.status_code == 400:
-            raise HTTPException(
-                status_code=400,
-                detail="Error, missing username/password values, please enter your username and/or password"
-            )
-
-        response_json = response.json()
-
-        if response_json["success"]:
+        if response_json.get("success"):
             response_token = Token(
-                access_token=response.json()["access"],
-                refresh_token=response.json()["refresh"],
+                access_token=response_json["access"],
+                refresh_token=response_json["refresh"],
                 token_type="bearer"
             )
         else:

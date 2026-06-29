@@ -5,3 +5,10 @@
 __pycache__
 .env
 .cache.sqlite
+
+venv
+.python-version
+docs/
+parity.csv
+parity_plots/
+scripts/

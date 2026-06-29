@@ -61,6 +61,6 @@ def delete_unit(
             detail="Can't delete a unit that doesn't exist."
         )
 
-    removed_unit = unit.remove(db=db, id=unit_id.id)
+    unit.remove(db=db, id=unit_id.id)
 
     return Message(message="Successfully removed unit!")

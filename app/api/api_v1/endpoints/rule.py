@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 
 import crud
 from api import deps
-from models import User
 from schemas import Message, RulesDB, RuleDB, CreateRuleWithConditions, CreateCondition, CreateRule
 
 router = APIRouter()

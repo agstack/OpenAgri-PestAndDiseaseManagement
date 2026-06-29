@@ -225,7 +225,8 @@ def calculate_gdd_wd(
 
     final_response = {
         "@context": context,
-        "@graph": graph
+        "@graph": graph,
+        "@models": disease_models
     }
 
     return final_response

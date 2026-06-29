@@ -9,3 +9,5 @@ from .pest_model import PestModel
 from .parcel import Parcel
 from .disease import Disease
 from .gddinterval import GDDInterval
+from .crop import Crop
+from .threat_model import ThreatModel

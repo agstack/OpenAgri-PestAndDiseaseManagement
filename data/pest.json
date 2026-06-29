@@ -1,0 +1,1131 @@
+{
+  "Almond": {
+    "Myzus persicae": {
+      "label": "Green peach aphid",
+      "t_base": 5.0,
+      "t_lethal_min": -2.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        80,
+        1200
+      ],
+      "pheno_fraction": [
+        0.036,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 53 (Green tip / bud burst)",
+      "pheno_bbch_end": "BBCH 87 (Fruit development)",
+      "source": "Blackman & Eastop (2000) Aphids on the World's Crops; EPPO DS MYZUPE"
+    },
+    "Capnodis tenebrionis": {
+      "label": "Flat-headed rootborer",
+      "t_base": 15.0,
+      "t_lethal_min": 0.0,
+      "t_optimal_min": 25.0,
+      "t_optimal_max": 35.0,
+      "t_lethal_max": 42.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        300,
+        1400
+      ],
+      "pheno_fraction": [
+        0.136,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 60 (Flowering)",
+      "pheno_bbch_end": "BBCH 87 (Fruit development)",
+      "source": "Dembilio et al. (2009) J. Pest Sci. 82:281-290 | doi:10.1007/s10340-009-0240-z"
+    },
+    "Monosteira unicostata": {
+      "label": "Almond false tiger",
+      "t_base": 10.0,
+      "t_lethal_min": 5.0,
+      "t_optimal_min": 28.0,
+      "t_optimal_max": 35.0,
+      "t_lethal_max": 42.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 57 (Balloon stage)",
+      "pheno_bbch_end": "BBCH 87",
+      "source": "Sánchez-Ramos et al. (2015) Span. J. Agric. Res. 13(4) | doi:10.5424/sjar/2015134-7564"
+    }
+  },
+  "Apple": {
+    "Cydia pomonella": {
+      "label": "Codling moth",
+      "t_base": 10.0,
+      "t_upper_threshold": 31.0,
+      "t_lethal_min": -10.0,
+      "t_optimal_min": 18.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 38.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1600
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.727
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 59 (First open flower)",
+      "pheno_bbch_end": "BBCH 87 (Harvest)",
+      "gdd_first_flight": 250,
+      "gdd_peak_first_gen": 468,
+      "gdd_second_flight": 900,
+      "source": "AliNiazee & Jensen (1973) Environ. Entomol. 2:822-825; WSU Tree Fruit Models (2022)"
+    },
+    "Venturia inaequalis": {
+      "label": "Apple scab",
+      "t_base": 0.0,
+      "t_optimal_min": 18.0,
+      "t_optimal_max": 24.0,
+      "t_lethal_max": 33.0,
+      "min_streak": 2,
+      "min_wetness_hours_critical": 6,
+      "min_wetness_hours_high": 9,
+      "phenology_window_gdd": [
+        50,
+        800
+      ],
+      "pheno_fraction": [
+        0.023,
+        0.364
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 07-08 (Bud burst)",
+      "pheno_bbch_end": "BBCH 73 (Pea-size fruit)",
+      "mills_table_reference": "Mills (1944) + MacHardy & Gadoury (1989) revision: 18°C→6-9h, 15°C→12-16h, 12°C→20-24h, 9°C→32h",
+      "source": "Mills (1944) Cornell Bull. 630; MacHardy & Gadoury (1989) Phytopathology 79:304-307"
+    }
+  },
+  "Apricot": {
+    "Anarsia lineatella": {
+      "label": "Peach twig borer",
+      "t_base": 10.0,
+      "t_lethal_min": -5.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 38.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        100,
+        1200
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 51 (Visible bud scales)",
+      "pheno_bbch_end": "BBCH 89 (Fruit ripening)",
+      "source": "Evenden et al. (2007) Environ. Entomol. 36:706-716 | doi:10.1093/ee/36.3.706"
+    },
+    "Drosophila suzukii": {
+      "label": "Spotted wing drosophila",
+      "t_base": 4.0,
+      "t_lethal_min": 2.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 32.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 77 (Fruit color development)",
+      "pheno_bbch_end": "BBCH 89 (Full ripeness)",
+      "note": "t_base corrected from 3→4°C per Tochen et al. 2014; active when fruit starts to soften/colour",
+      "source": "Tochen et al. (2014) Environ. Entomol. 43(2):501-510 | doi:10.1603/EN13227"
+    },
+    "Monilia spp": {
+      "label": "Brown rot",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 2,
+      "min_wetness_hours_critical": 12,
+      "min_wetness_hours_high": 5,
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 55 (Balloon stage / flowering)",
+      "pheno_bbch_end": "BBCH 89 (Harvest)",
+      "source": "Xu & Robinson (2000) Plant Pathol. 49:621-629 | doi:10.1046/j.1365-3059.2000.00494.x"
+    }
+  },
+  "Avocado": {
+    "Colletotrichum gloeosporioides": {
+      "label": "Avocado anthracnose",
+      "t_base": 12.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 30.0,
+      "t_lethal_max": 40.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "note": "t_base corrected from 8→12°C; Estrada et al. 2000 shows min growth at 12°C, optimal 28°C. Active year-round in tropical/subtropical climates.",
+      "source": "Estrada et al. (2000) Plant Pathology 49:482-490 | doi:10.1046/j.1365-3059.2000.00492.x"
+    },
+    "Oligonychus perseae": {
+      "label": "Persea mite",
+      "t_base": 10.0,
+      "t_optimal_min": 28.0,
+      "t_optimal_max": 35.0,
+      "t_lethal_max": 40.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Hoddle et al. (2004) Fla. Entomol. 87(4):473-481"
+    },
+    "Pseudacysta perseae": {
+      "label": "Avocado lace bug",
+      "t_base": 10.0,
+      "t_optimal_min": 25.0,
+      "t_optimal_max": 35.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        100,
+        1800
+      ],
+      "pheno_fraction": [
+        0.042,
+        0.75
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Peña & Schaffer (2007) Proc. VI World Avocado Congr."
+    }
+  },
+  "Banana": {
+    "Pseudocercospora fijiensis": {
+      "label": "Black Sigatoka",
+      "t_base": 13.0,
+      "t_optimal_min": 25.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 3,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "note": "Endemic in all commercial banana-growing regions. Disease cycle faster than M. musicola. Requires 3+ consecutive days with RH>90% for epidemic conditions.",
+      "source": "Mourichon et al. (1997) Fruits 52:303-311; EPPO Datasheet MYCOFJ"
+    }
+  },
+  "Cherry": {
+    "Drosophila suzukii": {
+      "label": "Spotted wing drosophila",
+      "t_base": 4.0,
+      "t_lethal_min": 2.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 32.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        900
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.409
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 75 (Fruit color change)",
+      "pheno_bbch_end": "BBCH 89 (Full ripeness / harvest)",
+      "note": "t_base corrected 3→4°C. Active from fruit coloring (transition from green to red). Short vulnerability window compared to other stone fruits.",
+      "source": "Tochen et al. (2014) Environ. Entomol. 43(2):501-510 | doi:10.1603/EN13227; Winkler et al. (2020) Agric. For. Entomol. doi:10.1111/afe.12381"
+    },
+    "Monilia spp": {
+      "label": "Brown rot",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 2,
+      "min_wetness_hours_critical": 12,
+      "phenology_window_gdd": [
+        100,
+        900
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.409
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 55 (Flowering)",
+      "pheno_bbch_end": "BBCH 89",
+      "source": "Xu & Robinson (2000) Plant Pathol. 49:621-629; CABI Compendium MONIFC"
+    },
+    "Rhagoletis cerasi": {
+      "label": "Cherry fruit fly",
+      "t_base": 5.0,
+      "t_optimal_min": 18.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 1,
+      "gdd_emergence_threshold": 430,
+      "gdd_peak_emergence": 550,
+      "gdd_oviposition_end": 700,
+      "phenology_window_gdd": [
+        430,
+        800
+      ],
+      "pheno_fraction": [
+        0.195,
+        0.364
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 75-77 (Fruit color development)",
+      "pheno_bbch_end": "BBCH 89 (Harvest)",
+      "note": "Phenology window updated to start at GDD 430 (adult emergence threshold, Boller & Remund 1983). Obligatory winter diapause as pupae in soil.",
+      "source": "Moraiti et al. (2017) Physiol. Entomol. 42:1-11 | doi:10.1111/phen.12206; Boller & Remund (1983) Mitt. Schweiz. Entomol. Ges. 56:115-120; EPPO Datasheet RHAGCE"
+    }
+  },
+  "Citrus": {
+    "Aphis spiraecola": {
+      "label": "Green citrus aphid",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 28.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        50,
+        1400
+      ],
+      "pheno_fraction": [
+        0.021,
+        0.583
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "pheno_bbch_start": "BBCH 07 (Bud swell) — new flush growth",
+      "pheno_bbch_end": "BBCH 73",
+      "source": "EPPO Datasheet APHISP; Komazaki (1982) Appl. Entomol. Zool. 17:351-356"
+    },
+    "Ceratitis capitata": {
+      "label": "Mediterranean fruit fly",
+      "t_base": 10.0,
+      "t_lethal_min": 5.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 32.0,
+      "min_streak": 1,
+      "gdd_first_generation": 250,
+      "phenology_window_gdd": [
+        200,
+        1600
+      ],
+      "pheno_fraction": [
+        0.083,
+        0.667
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "pheno_bbch_start": "BBCH 71 (Fruit set / pea-size)",
+      "pheno_bbch_end": "BBCH 89 (Harvest)",
+      "source": "Carey (1984) Ecol. Model. 24:267-283; CABI Compendium doi:10.1079/cabicompendium.12367"
+    },
+    "Eutetranychus orientalis": {
+      "label": "Oriental mite",
+      "t_base": 10.0,
+      "t_optimal_min": 28.0,
+      "t_optimal_max": 35.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.083,
+        0.583
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Badary & El-Shennawy (2008) Acarologia 48:87-92"
+    },
+    "Panonychus citri": {
+      "label": "Citrus red mite",
+      "t_base": 10.0,
+      "t_optimal_min": 27.0,
+      "t_optimal_max": 35.0,
+      "t_lethal_max": 40.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.042,
+        0.583
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Takafuji & Chant (1976) Exp. Appl. Acarol.; CABI Compendium PANOCI"
+    }
+  },
+  "Cocoa": {
+    "Moniliophthora roreri": {
+      "label": "Frosty pod rot",
+      "t_base": 15.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "min_streak": 3,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "note": "Requires 3+ consecutive days RH>90%. Endemic Central/South America. Year-round risk in humid tropics.",
+      "source": "Evans et al. (2003) Mycopathologia 156:181-185; EPPO Alert List Moniliophthora roreri"
+    },
+    "Phytophthora palmivora and P. megakarya": {
+      "label": "Black pod disease",
+      "t_base": 10.0,
+      "t_optimal_min": 25.0,
+      "t_optimal_max": 30.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "note": "P. megakarya (West Africa) more aggressive than P. palmivora. Critical: >10mm rain + T 25-30°C.",
+      "source": "Dargent et al. (2017) Plant Pathology 66:738-746 | doi:10.1111/ppa.12613; EPPO Datasheet PHYTPM"
+    }
+  },
+  "Coffee": {
+    "Hemileia vastatrix": {
+      "label": "Coffee leaf rust",
+      "t_base": 10.0,
+      "t_optimal_min": 21.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_min": 13.0,
+      "t_lethal_max": 31.0,
+      "min_streak": 2,
+      "min_free_water_hours": 24,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "note": "Spore germination only 13-31°C; optimal 21°C. Requires 24-48h free moisture. Altitude 1000-1800m ASL = peak risk zone.",
+      "source": "Avelino et al. (2004) Trop. Sci. 44:185-212; Zambolim et al. (2016) Trop. Plant Pathol. 41:261-265 | doi:10.1007/s40858-016-0061-7"
+    },
+    "Colletotrichum kahawae": {
+      "label": "Coffee berry disease",
+      "t_base": 10.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 28.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "EPPO Datasheet COLMKA; Waller et al. (2007) Coffee Pests, Diseases and their Management (CAB International)"
+    }
+  },
+  "Grape": {
+    "Plasmopora viticola": {
+      "label": "Downy mildew",
+      "t_base": 8.0,
+      "t_optimal_min": 15.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 33.0,
+      "min_streak": 2,
+      "goidanich_rule": "T>11°C + RH>90% + rainfall>10mm in 24-48h after BBCH 12",
+      "phenology_window_gdd": [
+        150,
+        1200
+      ],
+      "pheno_fraction": [
+        0.068,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 12 (2-leaf stage) — primary infection start",
+      "pheno_bbch_end": "BBCH 81 (Berry beginning to ripen)",
+      "source": "Lalancette et al. (1988) Phytopathology 78:1651-1658; Kennelly et al. (2007) Plant Disease 91:1558-1568; Goidanich (1975) rule"
+    },
+    "Uncinula necator": {
+      "label": "Powdery mildew",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 30.0,
+      "t_lethal_max": 36.0,
+      "min_streak": 2,
+      "wetness_effect": "INHIBITORY — leaf wetness reduces conidial germination",
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 07 (Bud burst)",
+      "pheno_bbch_end": "BBCH 81",
+      "note": "Uniquely inhibited by leaf wetness. Dry warm conditions favourable. Critical: 20-30°C, moderate RH 50-80%, no rain.",
+      "source": "Broome et al. (1995) Plant Disease 79:504-508; UC Davis RAI model Phytopathology 103:1-8"
+    },
+    "Botrytis cinerea": {
+      "label": "Grey mold",
+      "t_base": 0.0,
+      "t_optimal_min": 15.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 2,
+      "min_wetness_hours_critical": 15,
+      "two_fifteens_rule": "15°C + 15h continuous leaf wetness → epidemic threshold",
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 60 (Calyptra fall) — most critical stage",
+      "pheno_bbch_end": "BBCH 89 (Harvest)",
+      "source": "Elmer & Gaunt (1994) Plant Disease 78:1144-1150; Broome et al. (1995) Two-Fifteens Rule; Phytopathology 93:725-731"
+    },
+    "Phomopsis viticola": {
+      "label": "Phomopsis cane and leaf spot",
+      "t_base": 5.0,
+      "t_optimal_min": 15.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        50,
+        600
+      ],
+      "pheno_fraction": [
+        0.023,
+        0.273
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 05-09 (Bud burst) — shoots most susceptible",
+      "pheno_bbch_end": "BBCH 57 (Cluster separated)",
+      "source": "Wilcox et al. (1992) Phytopathology 82:1093-1098; EPPO Datasheet PHOMVI"
+    },
+    "Guignardia bidwelli": {
+      "label": "Black rot",
+      "t_base": 10.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 28.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        100,
+        1000
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.455
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 09 (Bud burst)",
+      "pheno_bbch_end": "BBCH 79 (Berries beginning to touch)",
+      "source": "Travis (1992) Plant Disease 76:901-904 | doi:10.1094/PD-76-0901; Spotts et al. (1998) Eur. J. Plant Pathol. 104:265-276"
+    }
+  },
+  "Guava": {
+    "Colletotrichum gloeosporioides": {
+      "label": "Guava anthracnose",
+      "t_base": 12.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 30.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Estrada et al. (2000) Plant Pathology 49:482-490"
+    },
+    "Bactrocera dorsalis and B. zonata": {
+      "label": "Guava fruit fly",
+      "t_base": 10.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 32.0,
+      "t_lethal_max": 40.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        9999
+      ],
+      "pheno_fraction": [
+        0.083,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "pheno_bbch_start": "BBCH 71 (Fruit set)",
+      "pheno_bbch_end": "BBCH 89 (Harvest)",
+      "source": "EPPO Datasheet DACUDO; CABI Compendium doi:10.1079/cabicompendium.17561"
+    }
+  },
+  "Hazelnut": {
+    "Halyomorpha halys": {
+      "label": "Brown marmorated stink bug",
+      "t_base": 14.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 30.0,
+      "t_lethal_max": 38.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 60 (Flowering)",
+      "pheno_bbch_end": "BBCH 87 (Nut fill)",
+      "source": "Nielsen et al. (2016) J. Pest Sci. 89:917-927 | doi:10.1007/s10340-015-0696-z; EPPO Datasheet HALYHA"
+    },
+    "Monilia spp": {
+      "label": "Brown rot",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        100,
+        1200
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "source": "Xu & Robinson (2000) Plant Pathol. 49:621-629"
+    }
+  },
+  "Mango": {
+    "Colletotrichum gloeosporioides": {
+      "label": "Mango anthracnose",
+      "t_base": 12.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 30.0,
+      "t_lethal_max": 40.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "note": "t_base corrected 8→12°C. Most severe on flowers and young fruit. Quiescent infections activate at harvest.",
+      "source": "Dodd et al. (1991) Plant Pathology 40:78-85; Frontiers in Microbiology 2023 | doi:10.3389/fmicb.2023.1168203"
+    },
+    "Bactrocera dorsalis and B. zonata": {
+      "label": "Mango fruit fly",
+      "t_base": 10.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 32.0,
+      "t_lethal_max": 40.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        300,
+        9999
+      ],
+      "pheno_fraction": [
+        0.125,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "pheno_bbch_start": "BBCH 71 (Fruit set)",
+      "pheno_bbch_end": "BBCH 89",
+      "source": "CABI Compendium doi:10.1079/cabicompendium.17561; EPPO Datasheet DACUDO"
+    },
+    "Oidium mangiferae": {
+      "label": "Mango powdery mildew",
+      "t_base": 10.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 2,
+      "wetness_effect": "Moderate — some wetness needed for spore germination, unlike Erysiphe necator",
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "pheno_bbch_start": "BBCH 51 (Inflorescence visible)",
+      "pheno_bbch_end": "BBCH 75 (Fruit development)",
+      "source": "Schoeman et al. (1995) Plant Disease 79:968-972; EPPO Datasheet OIDIUM"
+    }
+  },
+  "Olive": {
+    "Bactrocera oleae": {
+      "label": "Olive fly",
+      "t_base": 10.0,
+      "t_lethal_min": 5.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 27.0,
+      "t_lethal_max": 35.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        400,
+        1600
+      ],
+      "pheno_fraction": [
+        0.182,
+        0.727
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 71 (Fruit set / stone hardening starts)",
+      "pheno_bbch_end": "BBCH 89 (Harvest)",
+      "note": "Critical: T 22-27°C AND RH >80% (peak ovarian maturation). Above 35°C egg resorption occurs (protective effect).",
+      "source": "Pappas et al. (2011) J. Appl. Entomol. 135:359-366 | doi:10.1111/j.1439-0418.2010.01579.x; Margaritis et al. (2007) Entomol. Exp. Appl. 122:203-217"
+    },
+    "Prays oleae": {
+      "label": "Olive moth",
+      "t_base": 9.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 30.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        100,
+        1600
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.727
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 55 (Anthophagous generation on flowers)",
+      "pheno_bbch_end": "BBCH 89",
+      "note": "Three generations: anthophagous (flowers), carpophagous (fruits), phylophagous (leaves). Model covers all.",
+      "source": "Arambourg (1986) Traité d'Entomologie Oléicole; EPPO Datasheet PRAOLE"
+    },
+    "Venturia oleaginea": {
+      "label": "Olive leaf spot (Spilocea oleagina)",
+      "t_base": 5.0,
+      "t_optimal_min": 15.0,
+      "t_optimal_max": 20.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        50,
+        1200
+      ],
+      "pheno_fraction": [
+        0.023,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 09 (Bud burst) — year-round in mild climates",
+      "pheno_bbch_end": "BBCH 89",
+      "source": "Viruega & Trapero (1999) Plant Pathology 48:860-866 | doi:10.1046/j.1365-3059.1999.00393.x"
+    },
+    "Colletotrichum gloeosporioides": {
+      "label": "Olive anthracnose",
+      "t_base": 12.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 30.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 75 (Fruit color change to purple/black)",
+      "pheno_bbch_end": "BBCH 89",
+      "source": "Moral et al. (2008) Phytopathology 98:98-104 | doi:10.1094/PHYTO-98-1-0098"
+    },
+    "Pseudomonas savastanoi": {
+      "label": "Olive knot",
+      "t_base": 5.0,
+      "t_optimal_min": 15.0,
+      "t_optimal_max": 22.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        50,
+        600
+      ],
+      "pheno_fraction": [
+        0.023,
+        0.273
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 09 (Bud burst) — wounds from pruning/frost critical",
+      "pheno_bbch_end": "BBCH 57",
+      "note": "Infection through wounds (frost, pruning, hail). Rain splash essential for dispersal. Updated rainfall High→5mm.",
+      "source": "Quesada et al. (2010) Appl. Environ. Microbiol. 76:3496-3503 | doi:10.1128/AEM.02622-09"
+    },
+    "Pseudocercospora cladosporioides": {
+      "label": "Cercospora leaf spot",
+      "t_base": 5.0,
+      "t_optimal_min": 15.0,
+      "t_optimal_max": 22.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        50,
+        1200
+      ],
+      "pheno_fraction": [
+        0.023,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "source": "EPPO Datasheet PSDCOL; Graniti (1993) Phytopathol. Mediterr."
+    }
+  },
+  "Papaya": {
+    "Colletotrichum gloeosporioides": {
+      "label": "Papaya anthracnose",
+      "t_base": 12.0,
+      "t_optimal_min": 24.0,
+      "t_optimal_max": 30.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        0,
+        9999
+      ],
+      "pheno_fraction": [
+        0.0,
+        1.0
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Estrada et al. (2000) Plant Pathology 49:482-490"
+    }
+  },
+  "Peach": {
+    "Taphrina deformans (shoots)": {
+      "label": "Peach leaf curl (shoots)",
+      "t_base": 5.0,
+      "t_optimal_min": 10.0,
+      "t_optimal_max": 16.0,
+      "t_lethal_infection_max": 19.0,
+      "min_streak": 2,
+      "min_wetness_hours_critical": 12.5,
+      "phenology_window_gdd": [
+        50,
+        350
+      ],
+      "pheno_fraction": [
+        0.023,
+        0.159
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 01-07 (Dormancy break to bud swell)",
+      "pheno_bbch_end": "BBCH 39 (Shoots 9cm)",
+      "note": "Infection ONLY during bud burst to leaf emergence. Stops when Tavg >19°C. Requires ≥12.5h wetness (Gottwald 1983). min_streak updated 1→2.",
+      "source": "Gottwald & Bertrand (1983) Phytopathology 73:712-717; Adaskaveg et al. (2000) Phytopathology 90:359-366 | doi:10.1094/PHYTO.2000.90.4.359"
+    },
+    "Taphrina deformans (fruits)": {
+      "label": "Peach leaf curl (fruits)",
+      "t_base": 5.0,
+      "t_optimal_min": 10.0,
+      "t_optimal_max": 16.0,
+      "t_lethal_infection_max": 19.0,
+      "min_streak": 2,
+      "min_wetness_hours_critical": 12.5,
+      "phenology_window_gdd": [
+        350,
+        1400
+      ],
+      "pheno_fraction": [
+        0.159,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 39 (Post-shoot extension)",
+      "pheno_bbch_end": "BBCH 77 (Fruit growth stage)",
+      "note": "Secondary phase. min_streak updated 1→2 per Gottwald 1983.",
+      "source": "Gottwald & Bertrand (1983) Phytopathology 73:712-717"
+    },
+    "Myzus persicae": {
+      "label": "Green peach aphid",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        80,
+        1200
+      ],
+      "pheno_fraction": [
+        0.036,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "source": "Blackman & Eastop (2000); EPPO Datasheet MYZUPE"
+    },
+    "Ceratitis capitata": {
+      "label": "Mediterranean fruit fly",
+      "t_base": 10.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 32.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1600
+      ],
+      "pheno_fraction": [
+        0.083,
+        0.667
+      ],
+      "pheno_fraction_ref_gdd5": 2400,
+      "source": "Carey (1984) Ecol. Model. 24:267-283"
+    },
+    "Drosophila suzukii": {
+      "label": "Spotted wing drosophila",
+      "t_base": 4.0,
+      "t_lethal_min": 2.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 28.0,
+      "t_lethal_max": 32.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 77 (Fruit beginning to colour)",
+      "pheno_bbch_end": "BBCH 89",
+      "note": "t_base corrected 3→4°C.",
+      "source": "Tochen et al. (2014) Environ. Entomol. 43(2):501-510"
+    },
+    "Monilia spp": {
+      "label": "Brown rot",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "source": "Xu & Robinson (2000) Plant Pathol. 49:621-629"
+    }
+  },
+  "Pear": {
+    "Cydia pomonella": {
+      "label": "Codling moth",
+      "t_base": 10.0,
+      "t_upper_threshold": 31.0,
+      "t_optimal_min": 18.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 1,
+      "gdd_first_flight": 250,
+      "phenology_window_gdd": [
+        200,
+        1600
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.727
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "source": "AliNiazee & Jensen (1973) Environ. Entomol. 2:822-825; WSU Models (2022)"
+    },
+    "Erwinia amylovora": {
+      "label": "Fire blight",
+      "t_base": 18.0,
+      "t_optimal_min": 21.0,
+      "t_optimal_max": 27.0,
+      "t_lethal_max": 37.0,
+      "min_streak": 1,
+      "model_reference": "Maryblyt (Cougarblight): threshold 18°C minimum + wet period",
+      "phenology_window_gdd": [
+        100,
+        700
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.318
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 55 (Balloon stage) — blossom infection",
+      "pheno_bbch_end": "BBCH 72 (Pea-size fruit)",
+      "note": "t_base=18°C is the Maryblyt activation threshold for epidemic risk during flowering. General bacterial activity starts at 10°C but blossom infection requires ≥18°C.",
+      "source": "Billing (2011) Plant Pathology 60:179-189 | doi:10.1111/j.1365-3059.2010.02374.x; Vanneste et al. (2007) Phytoparasitica 35:246-255"
+    }
+  },
+  "Pistachio": {
+    "Alternaria alternata": {
+      "label": "Alternaria late blight",
+      "t_base": 10.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        200,
+        1400
+      ],
+      "pheno_fraction": [
+        0.091,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 55 (Flowering)",
+      "pheno_bbch_end": "BBCH 87 (Nut filling)",
+      "source": "Michailides et al. (1996) Phytopathology 86:1183-1192 | doi:10.1094/Phyto-86-1183"
+    },
+    "Agonoscena pistaciae": {
+      "label": "Pistachio psylla",
+      "t_base": 10.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 30.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 07 (Bud burst)",
+      "pheno_bbch_end": "BBCH 87",
+      "source": "Burckhardt et al. (2014) Zootaxa 3794; EPPO Datasheet AGOGPI"
+    }
+  },
+  "Plum": {
+    "Monilia spp": {
+      "label": "Brown rot",
+      "t_base": 5.0,
+      "t_optimal_min": 20.0,
+      "t_optimal_max": 25.0,
+      "min_streak": 2,
+      "phenology_window_gdd": [
+        100,
+        1400
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "source": "Xu & Robinson (2000) Plant Pathol. 49:621-629"
+    },
+    "Grapholita molesta": {
+      "label": "Oriental fruit moth",
+      "t_base": 10.0,
+      "t_optimal_min": 18.0,
+      "t_optimal_max": 25.0,
+      "t_lethal_max": 37.0,
+      "min_streak": 1,
+      "gdd_first_flight": 150,
+      "phenology_window_gdd": [
+        150,
+        1400
+      ],
+      "pheno_fraction": [
+        0.068,
+        0.636
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 55 (Flowering) — first gen. on shoots",
+      "pheno_bbch_end": "BBCH 89",
+      "source": "Rice (1986) UC Cooperative Ext. Leaflet 21426; Angulo et al. (2006) J. Econ. Entomol. 99:909-914"
+    },
+    "Anarsia lineatella": {
+      "label": "Peach twig borer",
+      "t_base": 10.0,
+      "t_optimal_min": 22.0,
+      "t_optimal_max": 28.0,
+      "min_streak": 1,
+      "phenology_window_gdd": [
+        100,
+        1200
+      ],
+      "pheno_fraction": [
+        0.045,
+        0.545
+      ],
+      "pheno_fraction_ref_gdd5": 2200,
+      "pheno_bbch_start": "BBCH 51-53 (Bud burst / green tip)",
+      "pheno_bbch_end": "BBCH 87",
+      "source": "Evenden et al. (2007) Environ. Entomol. 36:706-716"
+    }
+  }
+}

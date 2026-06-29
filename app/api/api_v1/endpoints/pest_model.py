@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from api import deps
 
 import crud
-from models import User
 from schemas import PestModels, CreatePestModel, PestModelDB, Message, CreateCondition, CreateRule
 
 import pandas as pd
