@@ -42,7 +42,7 @@ def calculate_risk_index_verbose(
     pest_models = []
 
     for mid in model_ids.ids:
-        pest_model_db = crud.pest_model.get(db=db, id=mid)
+        pest_model_db = crud.pest_model.get_with_rules(db=db, id=mid)
 
         if not pest_model_db:
             raise HTTPException(
@@ -89,7 +89,7 @@ def calculate_risk_index_high(
     pest_models = []
 
     for mid in model_ids.ids:
-        pest_model_db = crud.pest_model.get(db=db, id=mid)
+        pest_model_db = crud.pest_model.get_with_rules(db=db, id=mid)
 
         if not pest_model_db:
             raise HTTPException(
@@ -133,7 +133,7 @@ def calculate_gdd(
 
     disease_models_db = []
     for disease_id in model_ids.ids:
-        disease_model_db = crud.disease.get(db=db, id=disease_id)
+        disease_model_db = crud.disease.get_with_gdd_points(db=db, id=disease_id)
         if not disease_model_db:
             raise HTTPException(
                 status_code=400,

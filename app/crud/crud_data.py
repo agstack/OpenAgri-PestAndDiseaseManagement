@@ -22,8 +22,6 @@ class CrudData(CRUDBase[Data, CreateData, dict]):
             db.rollback()
             return None
 
-        [db.refresh(x) for x in data_model]
-
         return data_model
 
     def get_data_query_by_parcel_id(self, db: Session, parcel_id: int):
@@ -40,8 +38,11 @@ class CrudData(CRUDBase[Data, CreateData, dict]):
         return db.query(Data).filter(Data.parcel_id == parcel_id, Data.date == date, Data.time == time).first()
 
     def get_data_by_parcel_id_and_date_interval(self, db: Session, parcel_id: int,
-                                                start: datetime.date, end: datetime.date):
-        return db.query(Data).filter(Data.parcel_id == parcel_id, Data.date >= start, Data.date <= end).all()
+                                                start: datetime.date, end: datetime.date,
+                                                skip: int = 0, limit: int = 500):
+        return db.query(Data).filter(
+            Data.parcel_id == parcel_id, Data.date >= start, Data.date <= end
+        ).order_by(Data.date.asc(), Data.time.asc()).offset(skip).limit(limit).all()
 
 
 data = CrudData(Data)

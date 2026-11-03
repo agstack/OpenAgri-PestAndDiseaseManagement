@@ -22,7 +22,17 @@ def calculate_gdd(db: Session, parcel: Parcel, disease_models: List[Disease],
     data_db = crud.data.get_data_query_by_parcel_id_and_date_interval(db=db, parcel_id=parcel.id,
                                                                       date_from=start, date_to=end)
 
-    df = pd.read_sql(sql=data_db.statement, con=db.bind, parse_dates={"date": "%Y-%m-%d"})
+    df = pd.read_sql(sql=data_db.statement, con=db.connection(), parse_dates={"date": "%Y-%m-%d"})
+
+    # Release the DB connection now — everything below is pure pandas/Python
+    # work on already-fetched data plus already eager-loaded disease_model
+    # attributes (gdd_points). Holding the connection through that work keeps
+    # it checked out from the pool for the entire GIL-bound computation below,
+    # which is what actually exhausts the pool under concurrent load (proven
+    # live: the pool fills almost instantly on the cheap query above, then
+    # stays pinned at max for tens of seconds while requests wait their GIL
+    # turn to run this computation — not because the query itself is slow).
+    db.close()
 
     df['datetime'] = pd.to_datetime(df['date'].astype(str) + ' ' + df['time'].astype(str))
 
@@ -225,7 +235,8 @@ def calculate_gdd_wd(
 
     final_response = {
         "@context": context,
-        "@graph": graph
+        "@graph": graph,
+        "@models": disease_models
     }
 
     return final_response

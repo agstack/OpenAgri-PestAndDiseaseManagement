@@ -6,3 +6,5 @@ from .gkutils import *
 from .custom_logger import get_logger
 from .fcutils import *
 from .wdutils import *
+from .weather_service_client import WeatherServiceClient
+from .gatekeeper_client import GatekeeperClient

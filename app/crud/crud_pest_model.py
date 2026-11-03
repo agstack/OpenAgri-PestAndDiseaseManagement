@@ -1,14 +1,20 @@
-from typing import Optional
+from typing import Any, Optional
 
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from crud.base import CRUDBase
 
-from models import PestModel, Cultivation
+from models import PestModel, Cultivation, Rule, Condition
 from schemas import CreatePestModel, UpdatePestModel
 
 
 class CrudPestModel(CRUDBase[PestModel, CreatePestModel, UpdatePestModel]):
+
+    def get_with_rules(self, db: Session, id: Any) -> Optional[PestModel]:
+        return db.query(PestModel).options(
+            joinedload(PestModel.rules).joinedload(Rule.conditions).joinedload(Condition.unit),
+            joinedload(PestModel.rules).joinedload(Rule.conditions).joinedload(Condition.operator),
+        ).filter(PestModel.id == id).first()
 
     def create(self, db: Session, obj_in: CreatePestModel, **kwargs) -> Optional[PestModel]:
 

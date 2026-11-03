@@ -1,6 +1,4 @@
-import requests
 from fastapi import APIRouter, Depends, HTTPException
-from requests import RequestException
 from sqlalchemy.orm import Session
 from typing import Any
 
@@ -10,6 +8,7 @@ from models import User
 from schemas import Message, UserCreate, UserMe
 from crud import user
 from core import settings
+from utils.gatekeeper_client import GatekeeperClient
 
 
 router = APIRouter()
@@ -33,24 +32,11 @@ def register(
         )
 
     if settings.USING_GATEKEEPER:
-        try:
-            response = requests.post(
-                url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/register/",
-                headers={"Content-Type": "application/json"},
-                json={"username": user_information.email,
-                      "email": user_information.email, "password": user_information.password}
-            )
-        except RequestException:
-            raise HTTPException(
-                status_code=400,
-                detail="Error, can't connect to gatekeeper instance."
-            )
-
-        if response.status_code / 100 != 2:
-            raise HTTPException(
-                status_code=400,
-                detail="Error, gatekeeper raise issue with request."
-            )
+        GatekeeperClient(str(settings.GATEKEEPER_BASE_URL)).register_user(
+            username=user_information.email,
+            email=user_information.email,
+            password=user_information.password,
+        )
 
     else:
         user_db = user.get_by_email(db=db, email=user_information.email)

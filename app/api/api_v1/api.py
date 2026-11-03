@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from .endpoints import login, user, data, rule, unit, operator, tool, pest_model, parcel, disease, model
+from .endpoints import crop, threat_model, fuzzy_risk
 
 api_router = APIRouter()
 api_router.include_router(login.router, prefix="/login", tags=["login"])
@@ -13,3 +14,6 @@ api_router.include_router(pest_model.router, prefix="/pest-model", tags=["pest-m
 api_router.include_router(parcel.router, prefix="/parcel", tags=["parcel"])
 api_router.include_router(disease.router, prefix="/disease", tags=["disease"])
 api_router.include_router(model.router, prefix="/model", tags=["model"])
+api_router.include_router(crop.router, prefix="/crop", tags=["crop"])
+api_router.include_router(threat_model.router, prefix="/threat-model", tags=["threat-model"])
+api_router.include_router(fuzzy_risk.router, prefix="/fuzzy-risk", tags=["fuzzy-risk"])

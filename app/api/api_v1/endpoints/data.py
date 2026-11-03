@@ -33,14 +33,20 @@ def get_data_for_parcel(
         parcel_id: int,
         start: datetime.date,
         end: datetime.date,
+        skip: int = 0,
+        limit: int = 500,
         db: Session = Depends(deps.get_db)
 ) -> ListData:
     """
-    This API returns weather data for a date interval, for some parcel
+    This API returns weather data for a date interval, for some parcel.
+
+    Results are paginated (default page size 500, ordered by date/time) to
+    avoid returning an unbounded number of rows in a single response.
+    Use skip/limit query params to page through a wide date interval.
     """
 
     response_object = crud.data.get_data_by_parcel_id_and_date_interval(
-        db=db, parcel_id=parcel_id, start=start, end=end
+        db=db, parcel_id=parcel_id, start=start, end=end, skip=skip, limit=limit
     )
 
     return ListData(list_of_data=response_object)

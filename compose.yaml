@@ -16,10 +16,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    image: ghcr.io/openagri-eu/openagri-pestanddiseasemanagement:latest
+    image: ghcr.io/${DOCKER_REGISTRY}/openagri-pestanddiseasemanagement:${TAG}
     ports:
       - ${SERVICE_PORT}:${SERVICE_PORT}
-    build: .
+    build:
+      context: .
+      args:
+        SOURCE_REPO: ${SOURCE_REPO}
     command: /code/entrypoint.sh ${SERVICE_PORT}
     env_file:
       - .env

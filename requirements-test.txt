@@ -1,0 +1,32 @@
+fastapi==0.115.6
+alembic==1.13.1 # DB migrations
+requests==2.32.0 # Readable HTTP
+#pyargon2==1.0.7 # Encryption
+psycopg2==2.9.9 # PSQL driver
+password-validator==1.0 # Enforceable rules for passwords
+pydantic-settings==2.2.1 # Pydantic settings options [donated to the python-org, not part of the main package anymore]
+passlib==1.7.4 # For password managment
+PyJWT==2.8.0 # Instead of jose (has a CVE)
+argon2_cffi==23.1.0 # Backend for Argon encryption
+openpyxl==3.1.2 # For Excel support up to 2010
+python-multipart==0.0.18 # For uploading files (.csv, .xlss ...)
+SQLAlchemy==2.0.31
+pydantic==2.8.2
+starlette==0.40.0
+# Rule engine that can take arbitrary python objects with fields and apply filters or rules onto them
+rule-engine==4.5.0
+pandas==2.2.2
+uvicorn==0.32.1
+
+#
+shapely==2.0.6
+openmeteo-requests==1.3.0
+requests-cache==1.2.1
+retry-requests==2.0.0
+numpy==2.2.2
+apscheduler==3.11.0
+
+# Testing
+pytest==8.4.2
+pytest-mock==3.15.1
+pytest-env==1.2.0

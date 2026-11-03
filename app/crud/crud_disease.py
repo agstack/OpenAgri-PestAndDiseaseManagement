@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from crud.base import CRUDBase
 from models import Disease, GDDInterval
@@ -13,9 +13,12 @@ from schemas import CreateDisease, GDDIntervalInput, UpdateDiseaseModel
 class CrudDisease(CRUDBase[Disease, CreateDisease, dict]):
 
     def get_all(self, db: Session):
-        response = db.query(Disease).all()
+        response = db.query(Disease).options(joinedload(Disease.gdd_points)).all()
 
         return response
+
+    def get_with_gdd_points(self, db: Session, id: Any) -> Optional[Disease]:
+        return db.query(Disease).options(joinedload(Disease.gdd_points)).filter(Disease.id == id).first()
 
     def get_by_name(self, db: Session, name: str) -> Disease:
         response = db.query(Disease).filter(Disease.name == name).first()

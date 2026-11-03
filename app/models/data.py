@@ -41,5 +41,5 @@ class Data(Base):
     # also these
     solar_irradiance_copernicus = Column(Float, nullable=True, info={"unit_of_measure": "W/m2"})
 
-    parcel_id: Mapped[int] = mapped_column(ForeignKey("parcel.id"))
+    parcel_id: Mapped[int] = mapped_column(ForeignKey("parcel.id"), index=True)
     parcel: Mapped["Parcel"] = relationship(back_populates="data")

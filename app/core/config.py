@@ -3,13 +3,11 @@ from typing import Optional, Any, List
 from password_validator import PasswordValidator
 from pydantic import AnyHttpUrl, field_validator
 from pydantic_settings import BaseSettings
-from os import path, environ
+from os import environ
 
 
 class Settings(BaseSettings):
     CORS_ORIGINS: List[AnyHttpUrl] | List[str] = None
-
-    PROJECT_ROOT: str = path.dirname(path.dirname(path.realpath(__file__)))
 
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -52,10 +50,23 @@ class Settings(BaseSettings):
     # Gatekeeper info
     USING_GATEKEEPER: bool
     GATEKEEPER_BASE_URL: Optional[AnyHttpUrl] = None
-    GATEKEEPER_USERNAME: str
-    GATEKEEPER_PASSWORD: str
-    SERVICE_NAME: str
+    GATEKEEPER_USERNAME: Optional[str] = None
+    GATEKEEPER_PASSWORD: Optional[str] = None
+    SERVICE_NAME: Optional[str] = None
     LOGGING: str
+
+    OFFLINE_DEPLOYMENT: bool = False
+    DISABLE_AUTH: bool = False
+    WEATHER_SERVICE_BASE_URL: Optional[AnyHttpUrl] = None
+    ENABLE_WEATHER_ENRICHMENT_ON_PARCEL_CREATE: bool = True
+
+    OPEN_METEO_MAX_PAST_DAYS: int = 92
+    OPEN_METEO_MIN_PAST_DAYS: int = 1
+    OPEN_METEO_MIN_FORECAST_DAYS: int = 1
+    OPEN_METEO_MAX_FORECAST_DAYS: int = 16
+
+    # Month when cumulative GDD resets (1 = Jan for NH, 7 = Jul for SH)
+    GDD_RESET_MONTH: int = 1
 
 
 settings = Settings()

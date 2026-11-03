@@ -1,32 +1,14 @@
 from fastapi import HTTPException
 
-import requests
-from requests import RequestException
-
 from core import settings
+from utils.gatekeeper_client import GatekeeperClient
 
 from shapely import wkt, errors
 
-def fetch_parcel_by_id(
-        access_token: str,
-        parcel_id: str
-):
 
-    try:
-        response_json = requests.get(
-            url=str(settings.GATEKEEPER_BASE_URL).strip("/") + "/api/proxy/farmcalendar/api/v1/FarmParcels/{}/?format=json".format(parcel_id),
-            headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(access_token)}
-        )
-    except RequestException:
-        raise HTTPException(
-            status_code=400,
-            detail="Error during proxy call via gk"
-        )
-
-    if response_json.status_code == 404:
-        return None
-
-    return response_json.json()
+def fetch_parcel_by_id(access_token: str, parcel_id: str):
+    client = GatekeeperClient(str(settings.GATEKEEPER_BASE_URL))
+    return client.get_parcel(access_token, parcel_id)
 
 
 def fetch_parcel_lat_lon(

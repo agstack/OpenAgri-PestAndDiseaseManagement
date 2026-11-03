@@ -14,8 +14,13 @@ from jobs.background_tasks import get_open_meteo_data
 
 import logging
 
+logger = logging.getLogger(__name__)
+
+
 @asynccontextmanager
 async def lifespan(fa: FastAPI):
+    if settings.DISABLE_AUTH:
+        logger.warning("DISABLE_AUTH=True — all authentication is disabled. Do not use in production.")
     init_db()
     if settings.USING_GATEKEEPER:
         register_apis_to_gatekeeper()

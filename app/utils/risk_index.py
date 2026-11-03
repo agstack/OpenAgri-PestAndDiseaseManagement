@@ -1,6 +1,7 @@
 import datetime
 from typing import List, Optional
 
+from pandas import DataFrame
 from sqlalchemy.orm import Session
 import pandas as pd
 
@@ -24,7 +25,18 @@ def calculate_risk_index_probability(db: Session, parcel: Parcel, pest_models: L
     data_db = crud.data.get_data_query_by_parcel_id_and_date_interval(db=db, parcel_id=parcel.id,
                                                                       date_from=from_date, date_to=to_date)
 
-    df = pd.read_sql(sql=data_db.statement, con=db.bind, parse_dates={"date": "%Y-%m-%d"})
+    df = pd.read_sql(sql=data_db.statement, con=db.connection(), parse_dates={"date": "%Y-%m-%d"})
+
+    # Release the DB connection now — everything below is pure pandas/Python
+    # work on already-fetched data plus already eager-loaded pest_model
+    # attributes (rules/conditions/unit/operator). Holding the connection
+    # through that work keeps it checked out from the pool for the entire
+    # GIL-bound computation below, which is what actually exhausts the pool
+    # under concurrent load (proven live: the pool fills almost instantly on
+    # the cheap query above, then stays pinned at max for tens of seconds
+    # while requests wait their GIL turn to run this computation — not
+    # because the query itself is slow).
+    db.close()
 
     # Calculate the risks associated with each pest_model
     for pm in pest_models:
@@ -168,7 +180,6 @@ def calculate_risk_index_probability_wd(
                 )
                 continue
 
-
         graph_element = {
             "@id": "urn:openagri:pestInfectationRisk:{}".format(uuid.uuid4()),
             "@type": ["ObservationCollection"],
@@ -207,9 +218,104 @@ def calculate_risk_index_probability_wd(
 
         graph.append(graph_element)
 
-    doc = {
-        "@context": utils.context,
-        "@graph": graph
-    }
+    doc = {"@context": utils.context, "@graph": graph}
+
+    return doc
+
+
+def calculate_forecast_risk_index(
+    parcel: Parcel, pest_models: list, weather_data: DataFrame
+):
+    reverse_dict = {v: k for k, v in openmeteo_friendly_variables.items()}
+    weather_data.rename(columns=reverse_dict, inplace=True)
+
+    for pm in pest_models:
+        risks_for_current_pm = ["Low"] * weather_data.shape[0]
+
+        for rule in pm.rules:
+            if len(rule.conditions) == 0:
+                continue
+            final_str = "(x['{}'] {} {})".format(
+                rule.conditions[0].unit.name,
+                rule.conditions[0].operator.symbol,
+                rule.conditions[0].value,
+            )
+            for cond in rule.conditions[1:]:
+                final_str = (final_str + " & " + "(x['{}'] {} {})".format(
+                        cond.unit.name, cond.operator.symbol, cond.value
+                    )
+                )
+
+            df_with_risk = weather_data.assign(
+                risk=eval("lambda x: {}".format(final_str))
+            )
+
+            risks_for_current_pm = [
+                rule.probability_value if x else y
+                for x, y in zip(df_with_risk["risk"], risks_for_current_pm)
+            ]
+
+        weather_data["{}".format(pm.name)] = risks_for_current_pm
+
+    context = utils.context
+
+    graph = []
+
+    for pm in pest_models:
+
+        calculated_risks = []
+        for date, risk in zip(weather_data["date"], weather_data["{}".format(pm.name)]):
+            calculated_risks.append(
+                {
+                    "@id": "urn:openagri:pestInfectationRisk:obs2:{}".format(
+                        uuid.uuid4()
+                    ),
+                    "@type": ["Observation", "PestInfestationRisk"],
+                    "phenomenonTime": "{}".format(str(date).replace(" ", "T")),
+                    "hasSimpleResult": "{}".format(risk),
+                }
+            )
+
+        graph_element = {
+            "@id": "urn:openagri:pestInfectationRisk:{}".format(uuid.uuid4()),
+            "@type": ["ObservationCollection"],
+            "description": "{} pest infectation risk forecast in x ".format(pm.name),
+            "observedProperty": {
+                "@id": "urn:openagri:pestInfectationRisk:op:{}".format(uuid.uuid4()),
+                "@type": ["ObservableProperty", "PestInfection"],
+                "name": "UNCINE pest infection",
+                "hasAgriPest": {
+                    "@id": "urn:openagri:pest:UNCINE",
+                    "@type": "AgriPest",
+                    "name": "UNCINE",
+                    "description": "Uncinula necator (syn. Erysiphe necator) is a fungus that causes powdery mildew of grape. It is a common pathogen of Vitis species, including the wine grape, Vitis vinifera",
+                    "eppoConcept": "https://gd.eppo.int/taxon/UNCINE",
+                },
+            },
+            "madeBySensor": {
+                "@id": "urn:openagri:pestInfectationRisk:model:{}".format(uuid.uuid4()),
+                "@type": ["Sensor", "AIPestDetectionModel"],
+                "name": "AI pest detaction model xyz",
+            },
+            "hasFeatureOfInterest": {
+                "@id": "urn:openagri:pestInfectationRisk:foi:{}".format(uuid.uuid4()),
+                "@type": ["FeatureOfInterest", "Point"],
+                "long": "{}".format(parcel.longitude),
+                "lat": "{}".format(parcel.latitude),
+            },
+            "basedOnWeatherDataset": {
+                "@id": "urn:openagri:weatherDataset:{}".format(parcel.id),
+                "@type": "WeatherDataset",
+                "name": "parcel_name_tba",
+            },
+            "resultTime": "{}".format(
+                datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            ),
+            "hasMember": calculated_risks,
+        }
+
+        graph.append(graph_element)
+
+    doc = {"@context": context, "@graph": graph}
 
     return doc
